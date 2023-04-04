@@ -1,0 +1,29 @@
+<launch>
+    
+  # ARIA  
+  <include file="$(find-pkg-share ros2aria)/launch/aria_rhodon.launch"/>
+  
+  # HOKUYO URG-04LX (back)
+  <include file="$(find-pkg-share missions_pkg)/launch/hokuyo_launch.py"/>
+  
+  # SICK LMS-200 (front)
+  <include file="$(find-pkg-share sicktoolbox_wrapper)/launch/sicklms200.launch"/>
+
+  # URDF model (TFs)
+  <include file="$(find-pkg-share missions_pkg)/launch/rhodon_urdf_launch.py"/>
+  
+  # Keyboard Control
+  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control.launch"/>
+ 
+  # MQTT_bridge
+  <include file="$(find-pkg-share mqtt_bridge)/launch/mqtt_basic_robot.py"/>
+
+  # NAV2 Autonomous Navigation
+  <include file="$(find-pkg-share missions_pkg)/launch/nav2_launch.py"/> 
+  
+  # NAV2 SLAM (mapping)
+  <!--<include file="$(find-pkg-share missions_pkg)/launch/nav2_slam_launch.py"/>-->
+
+  # RVIZ
+  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share missions_pkg)/rviz/rhodon.rviz" output="screen" launch-prefix="xterm -e" />
+</launch>

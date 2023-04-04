@@ -1,0 +1,1 @@
+KERNEL=="ttyUSB[0-9]*", SUBSYSTEMS=="usb-serial", DRIVERS=="ftdi_sio", SYMLINK+="sensors/sickLMS200"
