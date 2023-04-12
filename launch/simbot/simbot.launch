@@ -1,7 +1,7 @@
 <launch>    
  
-  # URDF model (TFs)
-  <include file="$(find-pkg-share missions_pkg)/launch/rhodon_urdf_launch.py"/>
+  # Simulator (CoppeliaSIM)
+  <!-- See simulator.launch -->  
   
   # Keyboard Control
   <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control.launch"/>
@@ -16,11 +16,12 @@
   <include file="$(find-pkg-share webHRI)/launch/webHRI.launch"/>
 
   # NAV2 Autonomous Navigation
-  <!-- <include file="$(find-pkg-share missions_pkg)/launch/nav2_launch.py"/> -->
+  <include file="$(find-pkg-share missions_pkg)/launch/simbot/nav2_launch.py"/>
   
   # NAV2 SLAM (mapping)
-  <!--<include file="$(find-pkg-share missions_pkg)/launch/nav2_slam_launch.py"/>-->
+  <!--<include file="$(find-pkg-share missions_pkg)/launch/simbot/nav2_slam_launch.py"/>-->
 
   # RVIZ
-  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share missions_pkg)/rviz/rhodon.rviz" output="screen" launch-prefix="xterm -e" />
+  <!-- See simulator.launch --> 
+  
 </launch>
