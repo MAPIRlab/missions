@@ -21,6 +21,9 @@
   # NAV2 SLAM (mapping)
   <!--<include file="$(find-pkg-share missions_pkg)/launch/simbot/nav2_slam_launch.py"/>-->
 
+  # Patrol
+  <include file="$(find-pkg-share patrol)/launch/patrol_launch.py"/>
+  
   # RVIZ
   <!-- See simulator.launch --> 
   
