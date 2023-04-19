@@ -8,20 +8,21 @@ from launch_ros.parameter_descriptions import ParameterFile
 
 def generate_launch_description():
     missions_pkg_dir = get_package_share_directory('missions_pkg')
-    laser_params = os.path.join(missions_pkg_dir, 'params', 'hokuyo_serial.yaml')
 
     laser = Node(
         package='urg_node',
         executable='urg_node_driver',
-        name='hokuyo_serial',
+        name='hokuyo_front',
         output='screen',
         prefix="xterm -e",
         parameters=[{'angle_max': 3.14},
             {'angle_min': -3.14},
             {'ip_port': 1853723},
-            {'serial_port': '/dev/sensors/hokuyo'},
+            #{'serial_port': '/dev/sensors/hokuyo_urg'},
+            {'serial_port': '/dev/ttyACM0'},
             {'serial_baud': 115200},
-            {'laser_frame_id': 'hokuyo_link'},
+            {'laser_frame_id': 'laser_front_link'},
+            {'laser_topic_name': 'scan_front'},
             {'calibrate_time': False},
             {'default_user_latency': -0.2},
             {'diagnostics_tolerance': 0.05},

@@ -106,8 +106,8 @@
   
   ## SENSORS ##
   
-  # Hokuyo
-  <link name="hokuyo_link">
+  # Laser Back (Hokuyo UTM-30LX)
+  <link name="laser_back_link">
     <visual>
       <geometry>
         <box size="0.05 0.05 0.05"/>
@@ -116,14 +116,14 @@
     </visual>
   </link>
   
-  <joint name="base_to_hokuyo" type="fixed">
+  <joint name="base_to_laser_back" type="fixed">
     <parent link="base_link"/>
-    <child link="hokuyo_link"/>
+    <child link="laser_back_link"/>
     <origin xyz="-0.2 0.0 0.28" rpy="0 3.14159 0"/>
   </joint>
   
-  # SICK front
-  <link name="sick_link">
+  # Laser front (SICK or Hokuyo URG-04LX)
+  <link name="laser_front_link">
     <visual>
       <geometry>
         <box size="0.05 0.05 0.05"/>
@@ -132,10 +132,11 @@
     </visual>
   </link>
   
-  <joint name="base_to_sick" type="fixed">
+  <joint name="base_to_laser_front" type="fixed">
     <parent link="base_link"/>
-    <child link="sick_link"/>
-    <origin xyz="0.04 0.0 0.18" rpy="3.14159 0 0"/>
+    <child link="laser_front_link"/>
+    # <origin_old xyz="0.04 0.0 0.18" rpy="3.14159 0 0"/>  # for SICK
+    <origin xyz="0.12 0.0 0.25" rpy="0 0 0"/>   # for hokuyo_urg
   </joint>
   
   

@@ -1,15 +1,19 @@
 <launch>
-    
+
+  # RVIZ
+  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share missions_pkg)/rviz/rhodon.rviz" output="screen" launch-prefix="xterm -e" />
+
 # HW_DRIVERS
 #===========    
   # ARIA
   <include file="$(find-pkg-share ros2aria)/launch/aria_rhodon.launch"/>
   
-  # HOKUYO URG-04LX (back)
-  <include file="$(find-pkg-share missions_pkg)/launch/rhodon/hokuyo_launch.py"/>
+  # HOKUYO UTM-30LX (back)
+  <include file="$(find-pkg-share missions_pkg)/launch/rhodon/hokuyo_back_launch.py"/>
   
-  # SICK LMS-200 (front)
-  <include file="$(find-pkg-share sicktoolbox_wrapper)/launch/sicklms200.launch"/>
+  # SICK LMS-200 || Hokuyo URG-04LX (front)
+  <!-- <include file="$(find-pkg-share sicktoolbox_wrapper)/launch/sicklms200.launch"/>-->
+  <include file="$(find-pkg-share missions_pkg)/launch/rhodon/hokuyo_front_launch.py"/>
 
   # URDF model (TFs)
   <include file="$(find-pkg-share missions_pkg)/launch/rhodon/rhodon_urdf_launch.py"/>
@@ -37,6 +41,5 @@
   <include file="$(find-pkg-share patrol)/launch/patrol_launch.py"/>
   
   
-  # RVIZ
-  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share missions_pkg)/rviz/rhodon.rviz" output="screen" launch-prefix="xterm -e" />
+  
 </launch>
