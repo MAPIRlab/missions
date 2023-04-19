@@ -119,7 +119,7 @@
   <joint name="base_to_laser_back" type="fixed">
     <parent link="base_link"/>
     <child link="laser_back_link"/>
-    <origin xyz="-0.2 0.0 0.28" rpy="0 3.14159 0"/>
+    <origin xyz="-0.2 0.0 0.0" rpy="0 3.14159 0"/>
   </joint>
   
   # Laser front (SICK or Hokuyo URG-04LX)
@@ -136,7 +136,7 @@
     <parent link="base_link"/>
     <child link="laser_front_link"/>
     # <origin_old xyz="0.04 0.0 0.18" rpy="3.14159 0 0"/>  # for SICK
-    <origin xyz="0.12 0.0 0.25" rpy="0 0 0"/>   # for hokuyo_urg
+    <origin xyz="0.12 0.0 0.0" rpy="0 0 0"/>   # for hokuyo_urg
   </joint>
   
   
