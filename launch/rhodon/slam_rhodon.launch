@@ -1,0 +1,22 @@
+<launch>
+  # USE THIS COMMAND TO SAVE TO FILE
+  # ros2 run nav2_map_server map_saver_cli -f map_name
+
+  # ARIA  
+  <include file="$(find-pkg-share ros2aria)/launch/aria_rhodon.launch"/>
+  
+  # SICK LMS-200 (front)
+  <include file="$(find-pkg-share sicktoolbox_wrapper)/launch/sicklms200.launch"/>
+
+  # URDF model (TFs)
+  <include file="$(find-pkg-share missions_pkg)/launch/rhodon/rhodon_urdf_launch.py"/>
+  
+  # Keyboard Control
+  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control.launch"/>
+ 
+  # NAV2 SLAM (map_server + slam_toolbox)
+  <include file="$(find-pkg-share missions_pkg)/launch/rhodon/nav2_slam_launch.py"/>
+
+  # RVIZ
+  <node pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(find-pkg-share missions_pkg)/rviz/rhodon.rviz" output="screen" launch-prefix="xterm -e" />
+</launch>
