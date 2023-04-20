@@ -26,6 +26,9 @@
   # Task Manager
   <node pkg="task_manager" exec="bt_manager" name="taskManager" output="screen" launch-prefix="xterm -e"/>
 
+  # Task from MQTT_bridge
+  <node pkg="task_manager" exec="task_from_topic" name="task_from_topic" output="screen" launch-prefix="xterm -e"/>
+
 # UTILS
 #===========
   # NAV2 Autonomous Navigation
