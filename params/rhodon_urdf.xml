@@ -136,7 +136,7 @@
     <parent link="base_link"/>
     <child link="laser_front_link"/>
     # <origin_old xyz="0.04 0.0 0.18" rpy="3.14159 0 0"/>  # for SICK
-    <origin xyz="0.12 0.0 0.0" rpy="0 0 0"/>   # for hokuyo_urg
+    <origin xyz="0.235 0.0 0.0" rpy="0 0 0"/>   # for hokuyo_urg
   </joint>
   
   
