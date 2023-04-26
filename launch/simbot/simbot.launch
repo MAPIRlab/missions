@@ -25,4 +25,6 @@
   # Patrol
   <include file="$(find-pkg-share patrol)/launch/patrol_launch.py"/>  
   
+  # battery_manager
+  <include file="$(find-pkg-share battery_manager)/battery_manager_launch.py"/>  
 </launch>
