@@ -4,7 +4,7 @@
   <!-- See simulator.launch -->  
   
   # Keyboard Control
-  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control.launch"/>
+  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control_simbot.launch"/>
  
   # MQTT_bridge
   <include file="$(find-pkg-share mqtt_bridge)/launch/mqtt_basic_robot.py"/>
