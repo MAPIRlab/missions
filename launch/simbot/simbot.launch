@@ -27,4 +27,7 @@
   
   # battery_manager
   <include file="$(find-pkg-share battery_manager)/battery_manager_launch.py"/>  
+
+  # Status Publisher
+  <include file="$(find-pkg-share robot_status_publisher)/launch/status_publisher_launch.py"/>  
 </launch>
