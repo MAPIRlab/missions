@@ -4,13 +4,14 @@
   <!-- See simulator.launch -->  
   
   # Keyboard Control
-  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control.launch"/>
+  <include file="$(find-pkg-share keyboard_control)/launch/keyboard_control_simbot.launch"/>
  
   # MQTT_bridge
   <include file="$(find-pkg-share mqtt_bridge)/launch/mqtt_basic_robot.py"/>
 
   # Task Manager
   <node pkg="task_manager" exec="bt_manager" name="taskManager" output="screen" launch-prefix="xterm -e"/>
+  <node pkg="task_manager" exec="task_from_topic" name="task_from_topic" output="screen" launch-prefix="xterm -e"/>
 
   # HRI
   <include file="$(find-pkg-share webHRI)/launch/webHRI.launch"/>
@@ -22,9 +23,11 @@
   <!--<include file="$(find-pkg-share missions_pkg)/launch/simbot/nav2_slam_launch.py"/>-->
 
   # Patrol
-  <include file="$(find-pkg-share patrol)/launch/patrol_launch.py"/>
+  <include file="$(find-pkg-share patrol)/launch/patrol_launch.py"/>  
   
-  # RVIZ
-  <!-- See simulator.launch --> 
-  
+  # battery_manager
+  <include file="$(find-pkg-share battery_manager)/battery_manager_launch.py"/>  
+
+  # Status Publisher
+  <include file="$(find-pkg-share robot_status_publisher)/launch/status_publisher_launch.py"/>  
 </launch>

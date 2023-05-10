@@ -30,7 +30,7 @@ amcl:
     alpha3: 0.1
     alpha4: 0.1
     alpha5: 0.2
-    base_frame_id: "base_footprint_PioneerP3DX"
+    base_frame_id: "base_link"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.9
     beam_skip_threshold: 0.3
@@ -44,7 +44,7 @@ amcl:
     max_beams: 60
     max_particles: 2000
     min_particles: 500
-    odom_frame_id: "odom_PioneerP3DX"
+    odom_frame_id: "odom"
     pf_err: 0.05
     pf_z: 0.99
     recovery_alpha_fast: 0.0
@@ -61,7 +61,7 @@ amcl:
     z_max: 0.05
     z_rand: 0.5
     z_short: 0.05
-    scan_topic: "/PioneerP3DX/laser_scan"
+    scan_topic: "/laser_scan"
     map_topic: "/map"
     set_initial_pose: true
     always_reset_initial_pose: false
@@ -90,8 +90,8 @@ bt_navigator:
   ros__parameters:
     use_sim_time: True
     global_frame: map
-    robot_base_frame: base_link_PioneerP3DX
-    odom_topic: /PioneerP3DX/odom
+    robot_base_frame: base_link
+    odom_topic: /odom
     bt_loop_duration: 10
     default_server_timeout: 20
     # Examples in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees
@@ -257,7 +257,7 @@ global_costmap:
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
-      robot_base_frame: base_link_PioneerP3DX
+      robot_base_frame: base_link
       use_sim_time: True
       robot_radius: 0.22
       resolution: 0.05
@@ -268,7 +268,7 @@ global_costmap:
         enabled: True
         observation_sources: scan
         scan:
-          topic: PioneerP3DX/laser_scan
+          topic: /laser_scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -301,8 +301,8 @@ local_costmap:
     ros__parameters:
       update_frequency: 5.0
       publish_frequency: 2.0
-      global_frame: odom_PioneerP3DX
-      robot_base_frame: base_link_PioneerP3DX
+      global_frame: odom
+      robot_base_frame: base_link
       use_sim_time: True
       rolling_window: true
       width: 3
@@ -325,7 +325,7 @@ local_costmap:
         mark_threshold: 0
         observation_sources: scan
         scan:
-          topic: /PioneerP3DX/laser_scan
+          topic: /laser_scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
@@ -363,8 +363,8 @@ behavior_server:
       plugin: "nav2_behaviors/BackUp"
     wait:
       plugin: "nav2_behaviors/Wait"
-    global_frame: odom_PioneerP3DX
-    robot_base_frame: base_link_PioneerP3DX
+    global_frame: odom
+    robot_base_frame: base_link
     transform_timeout: 0.1
     use_sim_time: true
     simulate_ahead_time: 2.0
