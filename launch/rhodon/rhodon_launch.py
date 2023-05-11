@@ -125,4 +125,51 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(nav2_launch_file)
         ),
 
+        # MQTT_bridge
+        Node(
+            package='mqtt_bridge',
+            executable='mqtt_bridge_node',
+            name='mqtt_bridge',
+            output='screen',
+            prefix='xterm -e',
+            parameters=[params_yaml_file]            
+            ),
+
+        # HRI
+        Node(
+            package='web_hri',
+            executable='web_hri',
+            name='web_hri',
+            output='screen',
+            prefix='xterm -e',
+            parameters=[params_yaml_file]
+            ),
+
+        # PATROL
+        Node(
+            package='patrol',
+            executable='patrol_times',
+            name='patrol_times',
+            output='screen',
+            parameters=[params_yaml_file]
+            ),
+        
+        # Battery_Manager
+        Node(
+            package='battery_manager',
+            executable='battery_manager',
+            name='battery_manager',
+            output='screen',
+            prefix="xterm -e",
+            parameters=[params_yaml_file]            
+            ),
+        
+        # Status Publisher
+        Node(
+            package='robot_status_publisher',
+            executable='robot_status_publisher_node',
+            name='status_publisher',
+            output='screen',
+            parameters=[params_yaml_file]
+            )
     ]) #end LaunchDescription

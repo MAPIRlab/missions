@@ -59,3 +59,47 @@ keyboard_control:
     linear_v_inc: 0.1
     angular_v_inc: 0.3
     publish_topic: '/cmd_vel'
+
+#-------------------------------------------------
+# UTILS
+#-------------------------------------------------
+mqtt_bridge:
+  ros__parameters:
+    host: "150.214.109.137"       # MQTT broker ip
+    port: 8002                    # MQTT broker TCP port
+    username: ""
+    password: ""
+    MQTT_topicName: "rhodon"        # main topic
+    MQTT_topics_subscribe: "tasks"  # subtopics to listen
+    append_timestamp: false
+
+patrol_times:
+  ros__parameters:
+    # Add as many poses in the patrol as desired (starts in pose_1)
+    pose_1: [0.0,0.0,0.0,0.0,0.0,0.0,1.0]   # lab 2.3.7
+    pose_2: [0.0,5.0,0.0,0.0,0.0,0.0,1.0]   # lab 2.3.6
+    pose_3: [4.6,-2.3,0.0,0.0,0.0,0.0,1.0]  # corridor
+
+battery_manager:
+  ros__parameters:
+    # main params
+    verbose: False
+    input_battery_topic: "/battery"
+    output_battery_topic: "/battery_filtered"
+    filter_lenght_samples: 30
+    publish_rate: 2.0
+    low_battery_voltage: 24.2
+    critial_battery_voltage: 24.0
+
+    # Log params
+    create_log: False
+    log_directory_path: "~"
+    log_interval_sec: 20
+
+status_publisher:
+  ros__parameters:
+    output_topic: "/ros2mqtt"
+    statusRate: 1.0
+    map_frame: "map"
+    base_frame: "base_link"
+    battery_topic: "battery_filtered"
