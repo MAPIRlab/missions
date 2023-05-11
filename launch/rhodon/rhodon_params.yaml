@@ -1,0 +1,61 @@
+# PARAMETERS FOR RHODON ROBOT
+
+#-------------------------------------------------
+# HW DRIVERS
+#-------------------------------------------------
+ros2aria:
+  ros__parameters:
+    use_sim_time: False
+    port: "/dev/sensors/patrolbot"
+    serial_baud: 115200
+    odom_frame: "odom"
+    base_link_frame: "base_link"
+
+
+hokuyo_front:
+  ros__parameters:
+    angle_max: 1.4
+    angle_min: -1.4
+    ip_port: 1853723
+    #serial_port: '/dev/sensors/hokuyo_urg'
+    serial_port: '/dev/ttyACM0'
+    serial_baud: 115200
+    laser_frame_id: 'laser_front_link'
+    laser_topic_name: 'scan_front'
+    calibrate_time: False
+    default_user_latency: -0.2
+    diagnostics_tolerance: 0.05
+    diagnostics_window_time: 5.0
+    error_limit: 4
+    get_detailed_status: False
+    publish_intensity: False
+    publish_multiecho: False
+    cluster: 1
+    skip: 0
+
+hokuyo_back:
+  ros__parameters:
+    angle_max: 1.4
+    angle_min: -1.4
+    ip_port: 1853723
+    #serial_port: '/dev/sensors/hokuyo_urg'
+    serial_port: '/dev/ttyACM1'
+    serial_baud: 115200
+    laser_frame_id: 'laser_back_link'
+    laser_topic_name: 'scan_back'
+    calibrate_time: False
+    default_user_latency: -0.2
+    diagnostics_tolerance: 0.05
+    diagnostics_window_time: 5.0
+    error_limit: 4
+    get_detailed_status: False
+    publish_intensity: False
+    publish_multiecho: False
+    cluster: 1
+    skip: 0
+
+keyboard_control:
+  ros__parameters:
+    linear_v_inc: 0.1
+    angular_v_inc: 0.3
+    publish_topic: '/cmd_vel'
