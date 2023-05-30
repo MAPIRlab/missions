@@ -9,6 +9,13 @@ keyboard_control:
     angular_v_inc: 0.3
     publish_topic: '/cmd_vel'
 
+coppelia_simulator:
+  ros__parameters:
+    coppelia_root_dir: "$(env COPPELIASIM_ROOT_DIR)"
+    coppelia_scene_path: "$(var coppelia_ros2_pkg)/scenes/ros2_mapirlab_pioneer.ttt"
+    coppelia_headless: False
+
+
 #-------------------------------------------------
 # UTILS
 #-------------------------------------------------
@@ -51,4 +58,4 @@ status_publisher:
     statusRate: 1.0
     map_frame: "map"
     base_frame: "base_link"
-    battery_topic: "battery_filtered"
+    battery_topic: "/battery_filtered"

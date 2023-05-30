@@ -6,6 +6,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterFile
 from nav2_common.launch import RewrittenYaml
 from ament_index_python.packages import get_package_share_directory
 
@@ -14,11 +15,12 @@ def generate_launch_description():
 
     # Get the pkg directory
     pkg_dir = get_package_share_directory('missions_pkg')
+    coppelia_ros2_pkg = get_package_share_directory('coppelia_ros2_pkg')
 
     # variables/files
     use_sim_time = True
     remappings = []
-    params_yaml_file = os.path.join(pkg_dir, 'launch', 'simbot', 'rhodon_params.yaml')
+    params_yaml_file = os.path.join(pkg_dir, 'launch', 'simbot', 'simbot_params.yaml')
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'simbot', 'nav2_launch.py')
     rviz_file = os.path.join(pkg_dir, 'rviz', 'coppelia_sim.rviz')
     urdf = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
@@ -37,11 +39,40 @@ def generate_launch_description():
             default_value=["info"],  #debug, info
             description="Logging level",
             ),
+        DeclareLaunchArgument(
+            "pkg_dir",
+            default_value = pkg_dir,
+            description = "this pkg dir",
+            ),
+        DeclareLaunchArgument(
+            "coppelia_ros2_pkg",
+            default_value = coppelia_ros2_pkg,
+            description = "Coppelia_pkg path",
+            ),
+
+        # RVIZ2
+        #============
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[],
+            arguments = ['-d' + rviz_file]
+            ),
 
         # HW_DRIVERS
         #============
-        # Simulator (CoppeliaSIM)
-        # See simulator.launch
+        # Coppelia Simulator
+        Node(
+            package='coppelia_ros2_pkg',
+            executable='coppelia_simulator',
+            name='coppelia_simulator',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters = [ParameterFile(params_yaml_file, allow_substs=True)]
+            ),
                         
         # Keyboard Control
         Node(
@@ -126,6 +157,7 @@ def generate_launch_description():
             executable='robot_status_publisher_node',
             name='status_publisher',
             output='screen',
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             )
     ]) #end LaunchDescription
