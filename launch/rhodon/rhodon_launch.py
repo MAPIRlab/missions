@@ -11,16 +11,17 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    # Get the launch directory
-    missions_pkg_dir = get_package_share_directory('missions_pkg')
+
+    # Get the pkg directory
+    pkg_dir = get_package_share_directory('missions_pkg')
 
     # variables/files
     use_sim_time = False
-    remappings=[]
-    params_yaml_file = os.path.join(missions_pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml')
-    nav2_launch_file = os.path.join(missions_pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
-    rviz_file = os.path.join(missions_pkg_dir, 'rviz', 'rhodon.rviz')
-    urdf = os.path.join(missions_pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
+    remappings = []
+    params_yaml_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml')
+    nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
+    rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
+    urdf = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
     logger = LaunchConfiguration("log_level")
@@ -43,7 +44,7 @@ def generate_launch_description():
             executable='ros2aria',
             name='ros2aria',
             output='screen',
-            prefix='xterm -e',
+            prefix='xterm -hold -e',
             parameters=[params_yaml_file]
             ),
 
@@ -53,7 +54,7 @@ def generate_launch_description():
             executable='urg_node_driver',
             name='hokuyo_front',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),        
         
@@ -63,7 +64,7 @@ def generate_launch_description():
             executable='urg_node_driver',
             name='hokuyo_back',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
 
@@ -83,7 +84,7 @@ def generate_launch_description():
             executable='keyboard_control_plus',
             name='keyboard_control',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
 
@@ -95,7 +96,7 @@ def generate_launch_description():
             executable='bt_manager',
             name='task_manager',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
         # Task From Topic
@@ -104,7 +105,7 @@ def generate_launch_description():
             executable='task_from_topic',
             name='task_from_topic',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
         
@@ -116,7 +117,7 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             arguments=['-d' + rviz_file]
             ),
 
@@ -131,7 +132,7 @@ def generate_launch_description():
             executable='mqtt_bridge_node',
             name='mqtt_bridge',
             output='screen',
-            prefix='xterm -e',
+            prefix='xterm -hold -e',
             parameters=[params_yaml_file]            
             ),
 
@@ -141,7 +142,7 @@ def generate_launch_description():
             executable='web_hri',
             name='web_hri',
             output='screen',
-            prefix='xterm -e',
+            prefix='xterm -hold -e',
             parameters=[params_yaml_file]
             ),
 
@@ -160,7 +161,7 @@ def generate_launch_description():
             executable='battery_manager',
             name='battery_manager',
             output='screen',
-            prefix="xterm -e",
+            prefix="xterm -hold -e",
             parameters=[params_yaml_file]            
             ),
         
