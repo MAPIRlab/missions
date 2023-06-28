@@ -1,0 +1,55 @@
+# PARAMETERS FOR Giraff ROBOT
+$(var namespace):
+  #-------------------------------------------------
+  # HW DRIVERS
+  #-------------------------------------------------
+  hokuyo_front:
+    ros__parameters:
+      angle_max: 1.4
+      angle_min: -1.4
+      ip_port: 1853723
+      #serial_port: '/dev/sensors/hokuyo_urg'
+      serial_port: '/dev/ttyACM0'
+      serial_baud: 115200
+      laser_frame_id: '$(var namespace)_laser_frame'
+      laser_topic_name: 'laser_scan'
+      calibrate_time: False
+      default_user_latency: -0.2
+      diagnostics_tolerance: 0.05
+      diagnostics_window_time: 5.0
+      error_limit: 4
+      get_detailed_status: False
+      publish_intensity: False
+      publish_multiecho: False
+      cluster: 1
+      skip: 0
+
+  keyboard_control:
+    ros__parameters:
+      linear_v_inc: 0.1
+      angular_v_inc: 0.3
+      publish_topic: 'cmd_vel'
+
+  battery_manager:
+    ros__parameters:
+      # main params
+      verbose: False
+      input_battery_topic: "battery"
+      output_battery_topic: "battery_filtered"
+      filter_lenght_samples: 30
+      publish_rate: 2.0
+      low_battery_voltage: 24.2
+      critial_battery_voltage: 24.0
+
+      # Log params
+      create_log: False
+      log_directory_path: "~"
+      log_interval_sec: 20
+
+  status_publisher:
+    ros__parameters:
+      output_topic: "ros2mqtt"
+      statusRate: 1.0
+      map_frame: "map"
+      base_frame: "base_link"
+      battery_topic: "battery_filtered"
