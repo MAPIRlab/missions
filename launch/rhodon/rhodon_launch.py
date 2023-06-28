@@ -20,6 +20,7 @@ def generate_launch_description():
     remappings = []
     params_yaml_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml')
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
+    apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_launch.py')
     rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
     urdf = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
     with open(urdf, 'r') as infp:
@@ -172,5 +173,10 @@ def generate_launch_description():
             name='status_publisher',
             output='screen',
             parameters=[params_yaml_file]
-            )
+            ),
+        
+        # Camera and AprilTags
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(apriltags_launch_file)
+        ),
     ]) #end LaunchDescription

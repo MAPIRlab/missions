@@ -6,7 +6,7 @@ usb_cam:
     video_device: "/dev/video0"
     framerate: 30.0
     io_method: "mmap"
-    frame_id: "camera"
+    frame_id: "camera_link"
     pixel_format: "mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
     image_width: 640
     image_height: 480
@@ -26,11 +26,11 @@ usb_cam:
     focus: -1
 
 #/**:
-apriltag:
+apriltag/apriltag:
   ros__parameters:
     image_transport: raw    # image format
     family: 36h11           # tag family name
-    size: 0.173             # tag edge size in meter
+    size: 0.086             # tag edge size in meter
     max_hamming: 0          # maximum allowed hamming distance (corrected bits)
 
     # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters

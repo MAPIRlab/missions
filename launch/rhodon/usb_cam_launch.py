@@ -63,6 +63,6 @@ def generate_launch_description():
             )
 
         # For calibration
-        #  ros2 run camera_calibration cameracalibrator -c owlotech_camera --size 7x7 --square 0.03 --ros-args -r image:=/image_raw -p camera:=/laptop_camera        
+        # ros2 run camera_calibration cameracalibrator -c owlotech_camera --size 6x8 --square 0.035 --ros-args -r image:=/image_raw -p camera:=owlotech_camera
 
     ]) #end LaunchDescription
