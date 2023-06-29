@@ -10,11 +10,11 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
-
+from launch_ros.parameter_descriptions import ParameterFile
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
-    slam_params_file = LaunchConfiguration('slam_params_file')
+    slam_params_file = ParameterFile( LaunchConfiguration('slam_params_file'), allow_substs=True)
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
         'use_sim_time',

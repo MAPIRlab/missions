@@ -1,49 +1,50 @@
-#-------------------------------------------------
-# HW DRIVERS
-#-------------------------------------------------
-usb_cam:
-  ros__parameters:
-    video_device: "/dev/video0"
-    framerate: 30.0
-    io_method: "mmap"
-    frame_id: "camera_link"
-    pixel_format: "mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
-    image_width: 640
-    image_height: 480
-    camera_name: "owlotech_camera"
-    #camera_info_url: "package://usb_cam/config/camera_info.yaml"
-    camera_info_url: "file:///home/mapir/.ros/camera_info/owlotech_camera.yaml"
-    brightness: -1
-    contrast: -1
-    saturation: -1
-    sharpness: -1
-    gain: -1
-    auto_white_balance: true
-    white_balance: 4000
-    autoexposure: true
-    exposure: 100
-    autofocus: false
-    focus: -1
+$(var namespace):
+  #-------------------------------------------------
+  # HW DRIVERS
+  #-------------------------------------------------
+  usb_cam:
+    ros__parameters:
+      video_device: "/dev/video0"
+      framerate: 30.0
+      io_method: "mmap"
+      frame_id: "camera"
+      pixel_format: "mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
+      image_width: 640
+      image_height: 480
+      camera_name: "owlotech_camera"
+      #camera_info_url: "package://usb_cam/config/camera_info.yaml"
+      camera_info_url: "file:///home/mapir/.ros/camera_info/owlotech_camera.yaml"
+      brightness: -1
+      contrast: -1
+      saturation: -1
+      sharpness: -1
+      gain: -1
+      auto_white_balance: true
+      white_balance: 4000
+      autoexposure: true
+      exposure: 100
+      autofocus: false
+      focus: -1
 
-#/**:
-apriltag/apriltag:
-  ros__parameters:
-    image_transport: raw    # image format
-    family: 36h11           # tag family name
-    size: 0.086             # tag edge size in meter
-    max_hamming: 0          # maximum allowed hamming distance (corrected bits)
+  #/**:
+  apriltag:
+    ros__parameters:
+      image_transport: raw    # image format
+      family: 36h11           # tag family name
+      size: 0.173             # tag edge size in meter
+      max_hamming: 0          # maximum allowed hamming distance (corrected bits)
 
-    # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
-    detector:
-      threads: 1          # number of threads
-      decimate: 2.0       # decimate resolution for quad detection
-      blur: 0.0           # sigma of Gaussian blur for quad detection
-      refine: True        # snap to strong gradients
-      sharpening: 0.25    # sharpening of decoded images
-      debug: False        # write additional debugging images to current working directory
+      # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
+      detector:
+        threads: 1          # number of threads
+        decimate: 2.0       # decimate resolution for quad detection
+        blur: 0.0           # sigma of Gaussian blur for quad detection
+        refine: True        # snap to strong gradients
+        sharpening: 0.25    # sharpening of decoded images
+        debug: False        # write additional debugging images to current working directory
 
-    # optional list of tags
-    #tag:
-    #  ids: [42, 14]            # tag ID
-    #  frames: [base, object]  # optional frame name
-    #  sizes: [0.162, 0.162]   # optional tag-specific edge size
+      # optional list of tags
+      #tag:
+      #  ids: [42, 14]            # tag ID
+      #  frames: [base, object]  # optional frame name
+      #  sizes: [0.162, 0.162]   # optional tag-specific edge size

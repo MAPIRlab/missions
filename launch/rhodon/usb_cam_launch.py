@@ -20,8 +20,8 @@ def generate_launch_description():
     use_sim_time = True    
     params_yaml_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_params.yaml')
     logger = LaunchConfiguration("log_level")
-    image_topic = ["/image_raw"]
-    info_topic = ["/camera_info"]
+    image_topic = ["image_raw"]
+    info_topic = ["camera_info"]
     
     return LaunchDescription([
         # Set env var to print messages to stdout immediately

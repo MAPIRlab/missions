@@ -1,44 +1,28 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, OpaqueFunction, GroupAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
-from nav2_common.launch import RewrittenYaml
+from launch_ros.parameter_descriptions import ParameterFile
+from launch_ros.actions import Node, PushRosNamespace
 from ament_index_python.packages import get_package_share_directory
+import xacro
 
-
-def generate_launch_description():
-
-    # Get the pkg directory
-    pkg_dir = get_package_share_directory('missions_pkg')
-
-    # variables/files
-    use_sim_time = False
-    remappings = []
-    params_yaml_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml')
+def launch_setup(context, *args, **kwargs):
+    # Get the launch directory
+    pkg_dir = get_package_share_directory("missions_pkg")
+    params_yaml_file = ParameterFile( os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml'), allow_substs=True)
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
     apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_launch.py')
     rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
     urdf = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
-    with open(urdf, 'r') as infp:
-        robot_desc = infp.read()
-    logger = LaunchConfiguration("log_level")
+    namespace = LaunchConfiguration('namespace').perform(context)
     
-    return LaunchDescription([
-        # Set env var to print messages to stdout immediately
-        SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
-        
-        DeclareLaunchArgument(
-            "log_level",
-            default_value=["info"],  #debug, info
-            description="Logging level",
-            ),
-
-        # HW_DRIVERS
-        #===========    
+    # HW_DRIVERS
+    #===========    
+    driver_nodes =[
         # ARIA
         Node(
             package='ros2aria',
@@ -69,7 +53,12 @@ def generate_launch_description():
             parameters=[params_yaml_file]
             ),
 
-        # URDF model (TFs)
+    ]
+    
+    # URDF model (TFs)
+    robot_desc = xacro.process_file(os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon.xacro'), mappings={'frame_ns': namespace})
+    robot_desc = robot_desc.toprettyxml(indent='  ')
+    robot_state_publisher = [
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -78,8 +67,10 @@ def generate_launch_description():
             parameters=[{'robot_description': robot_desc}],
             arguments=[urdf]
             ),
-                
-        # Keyboard Control
+    ]
+            
+    # Keyboard Control
+    keyboard_control=[
         Node(
             package='keyboard_control',
             executable='keyboard_control_plus',
@@ -88,9 +79,11 @@ def generate_launch_description():
             prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
+    ] 
 
-        # MANAGEMENT
-        #===========
+    # MANAGEMENT
+    #===========
+    task_manager = [
         # Task Manager
         Node(
             package='task_manager',
@@ -109,25 +102,35 @@ def generate_launch_description():
             prefix="xterm -hold -e",
             parameters=[params_yaml_file]
             ),
-        
-        # UTILS
-        #=========
-        # RVIZ
+    ]
+    
+    # UTILS
+    #=========
+    # RVIZ
+    rviz=[
         Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
             prefix="xterm -hold -e",
-            arguments=['-d' + rviz_file]
-            ),
+            arguments=['-d' + rviz_file],
+            remappings=[
+                ("/initialpose", "/rhodon/initialpose"),
+                ("/goal_pose", "/rhodon/goal_pose")
+            ]    
+        ),
+    ]
 
-        # NAV2 Autonomous Navigation (see nav2_launch.py)
+    # NAV2 Autonomous Navigation (see nav2_launch.py)
+    navigation = [
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(nav2_launch_file)
         ),
+    ]
 
-        # MQTT_bridge
+    # MQTT_bridge
+    mqtt = [
         Node(
             package='mqtt_bridge',
             executable='mqtt_bridge_node',
@@ -136,8 +139,10 @@ def generate_launch_description():
             prefix='xterm -hold -e',
             parameters=[params_yaml_file]            
             ),
+    ]
 
-        # HRI
+    # HRI
+    HRI = [
         Node(
             package='web_hri',
             executable='web_hri',
@@ -146,8 +151,10 @@ def generate_launch_description():
             prefix='xterm -hold -e',
             parameters=[params_yaml_file]
             ),
+    ]
 
-        # PATROL
+    # PATROL
+    patrol= [
         Node(
             package='patrol',
             executable='patrol_times',
@@ -155,8 +162,10 @@ def generate_launch_description():
             output='screen',
             parameters=[params_yaml_file]
             ),
-        
-        # Battery_Manager
+    ]
+    
+    # Battery_Manager
+    battery_manager = [
         Node(
             package='battery_manager',
             executable='battery_manager',
@@ -165,18 +174,57 @@ def generate_launch_description():
             prefix="xterm -hold -e",
             parameters=[params_yaml_file]            
             ),
-        
-        # Status Publisher
+    ] 
+    
+    # Status Publisher
+    status_publisher= [
         Node(
             package='robot_status_publisher',
             executable='robot_status_publisher_node',
             name='status_publisher',
             output='screen',
             parameters=[params_yaml_file]
-            ),
-        
-        # Camera and AprilTags
+            ), 
+    ]  
+    
+    # Camera and AprilTags
+    apriltags = [
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(apriltags_launch_file)
         ),
-    ]) #end LaunchDescription
+    ]
+
+    actions=[PushRosNamespace(namespace)]
+    actions.extend(driver_nodes)
+    actions.extend(robot_state_publisher)
+    actions.extend(keyboard_control)
+    actions.extend(task_manager)
+    actions.extend(rviz)
+    actions.extend(navigation)
+    actions.extend(mqtt)
+    actions.extend(HRI)
+    actions.extend(patrol)
+    actions.extend(battery_manager)
+    actions.extend(status_publisher)
+    actions.extend(apriltags)
+    return[
+        GroupAction
+        (
+            actions=actions
+        )
+    ]
+
+def generate_launch_description():
+
+    return LaunchDescription([
+        # Set env var to print messages to stdout immediately
+        SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
+        
+        DeclareLaunchArgument(
+            "log_level",
+            default_value=["info"],  #debug, info
+            description="Logging level",
+            ),
+        DeclareLaunchArgument('namespace', default_value="rhodon"),
+        OpaqueFunction(function = launch_setup)
+    ])

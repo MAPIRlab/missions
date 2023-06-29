@@ -13,7 +13,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 pkg_dir = get_package_share_directory('missions_pkg')
-params_yaml_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_params.yaml')
+params_yaml_file = ParameterFile(os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_params.yaml'), allow_substs=True)
 
 
 def generate_launch_description():

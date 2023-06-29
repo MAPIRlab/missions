@@ -79,15 +79,19 @@ def launch_setup(context, *args, **kwargs):
         #    executable='rviz2',
         #    name='rviz2',
         #    output='screen',
-        #    #prefix="xterm -hold -e",
-        #    ),
+        #    #prefix="xterm -hold -e",,
+        #    remappings=[
+        #        ("/initialpose", "/giraff/initialpose"),
+        #        ("/goal_pose", "/giraff/goal_pose")
+        #    ]
+        #),
     ]
     
 
     actions=[PushRosNamespace(namespace)]
     actions.extend(giraff_driver)
     actions.extend(visualization_nodes)
-    actions.extend(navigation_nodes)
+    #actions.extend(navigation_nodes)
     actions.extend(hokuyo_node)
     return[
         GroupAction

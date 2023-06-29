@@ -18,7 +18,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from nav2_common.launch import RewrittenYaml
+from launch_ros.parameter_descriptions import ParameterFile
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -29,7 +29,7 @@ def generate_launch_description():
     # common variables
     use_sim_time = False
     remappings=[]
-    params_yaml_file = os.path.join(my_dir, 'launch', 'rhodon', 'nav2_params.yaml')
+    params_yaml_file = ParameterFile( os.path.join(my_dir, 'launch', 'rhodon', 'nav2_params.yaml'), allow_substs=True)
     map_file = os.path.join(my_dir, 'maps', 'mapirlab_april_23.yaml')
     
     logger = LaunchConfiguration("log_level")
