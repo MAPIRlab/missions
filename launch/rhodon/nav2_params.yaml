@@ -1,6 +1,9 @@
 # PARAMETERS FOR NAV2 STACK
 # info: https://navigation.ros.org/setup_guides/algorithm/select_algorithm.html
-
+/*:
+  ros__parameters:
+    use_sim_time: True
+    
 $(var namespace):
   #-------------------------------------------------
   # (Map Server/Saver)
