@@ -27,7 +27,7 @@ def generate_launch_description():
     my_dir = get_package_share_directory('missions_pkg')
 
     # common variables
-    use_sim_time = False
+    use_sim_time = True
     remappings=[]
     params_yaml_file = ParameterFile( os.path.join(my_dir, 'launch', 'rhodon', 'nav2_params.yaml'), allow_substs=True)
     map_file = os.path.join(my_dir, 'maps', 'mapirlab_april_23.yaml')

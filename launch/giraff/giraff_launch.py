@@ -69,7 +69,7 @@ def launch_setup(context, *args, **kwargs):
             executable='robot_state_publisher',
             parameters=[
                 {
-                    'use_sim_time': False, 
+                    'use_sim_time': True, 
                     'robot_description': robot_desc
                 }
             ],
@@ -91,7 +91,7 @@ def launch_setup(context, *args, **kwargs):
     actions=[PushRosNamespace(namespace)]
     actions.extend(giraff_driver)
     actions.extend(visualization_nodes)
-    #actions.extend(navigation_nodes)
+    actions.extend(navigation_nodes)
     actions.extend(hokuyo_node)
     return[
         GroupAction

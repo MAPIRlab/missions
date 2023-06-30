@@ -1,5 +1,8 @@
 # PARAMETERS FOR Giraff ROBOT
 $(var namespace):
+  /*:
+    use_sim_time: True
+
   #-------------------------------------------------
   # HW DRIVERS
   #-------------------------------------------------
