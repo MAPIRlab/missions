@@ -197,16 +197,16 @@ def launch_setup(context, *args, **kwargs):
     actions=[PushRosNamespace(namespace)]
     actions.extend(driver_nodes)
     actions.extend(robot_state_publisher)
-    actions.extend(keyboard_control)
-    actions.extend(task_manager)
+    #actions.extend(keyboard_control)
+    #actions.extend(task_manager)
     actions.extend(rviz)
     actions.extend(navigation)
-    actions.extend(mqtt)
-    actions.extend(HRI)
-    actions.extend(patrol)
-    actions.extend(battery_manager)
-    actions.extend(status_publisher)
-    actions.extend(apriltags)
+    #actions.extend(mqtt)
+    #actions.extend(HRI)
+    #actions.extend(patrol)
+    #actions.extend(battery_manager)
+    #actions.extend(status_publisher)
+    #actions.extend(apriltags)
     return[
         GroupAction
         (
