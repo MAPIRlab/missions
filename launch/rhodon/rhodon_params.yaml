@@ -1,7 +1,8 @@
 # PARAMETERS FOR RHODON ROBOT
 $(var namespace):
   /*:
-    use_sim_time: True
+    ros__parameters:
+      use_sim_time: True
   #-------------------------------------------------
   # HW DRIVERS
   #-------------------------------------------------
