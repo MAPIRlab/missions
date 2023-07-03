@@ -102,7 +102,7 @@ $(var namespace):
   status_publisher:
     ros__parameters:
       output_topic: "ros2mqtt"
-      statusRate: 1.0
+      statusRate: 10.0
       map_frame: "map"
       base_frame: "$(var namespace)_base_link"
       battery_topic: "battery_filtered"

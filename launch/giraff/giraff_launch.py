@@ -63,7 +63,7 @@ def launch_setup(context, *args, **kwargs):
     robot_desc = xacro.process_file(os.path.join(my_dir, 'giraff.xacro'), mappings={'frame_ns': namespace})
     robot_desc = robot_desc.toprettyxml(indent='  ')
 
-    visualization_nodes = [
+    robot_state_publisher = [
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -73,32 +73,63 @@ def launch_setup(context, *args, **kwargs):
                     'robot_description': robot_desc
                 }
             ],
-        ),
+        )
+    ]
+    rviz = [
         Node(
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
             arguments=['-d' +  os.path.join(get_package_share_directory('missions_pkg'), 'rviz', 'giraff.rviz')],
-            #prefix="xterm -hold -e",,
+            prefix="xterm -hold -e",
             remappings=[
                 ("/initialpose", "/giraff/initialpose"),
                 ("/goal_pose", "/giraff/goal_pose")
             ]
         ),
     ]
-    
+
+    clock_server = Node(
+        package='robot2023',
+        executable='clock_server'
+    )
+
+    mqtt = [
+        Node(
+            package='mqtt_bridge',
+            executable='mqtt_bridge_node',
+            name='mqtt_bridge',
+            output='screen',
+            prefix='xterm -hold -e',
+            parameters=[params_yaml_file]            
+            ),
+    ]
+
+    status_publisher= [
+        Node(
+            package='robot_status_publisher',
+            executable='robot_status_publisher_node',
+            name='status_publisher',
+            output='screen',
+            parameters=[params_yaml_file]
+            ), 
+    ]  
 
     actions=[PushRosNamespace(namespace)]
     actions.extend(giraff_driver)
-    actions.extend(visualization_nodes)
+    actions.extend(robot_state_publisher)
+    actions.extend(rviz)
     actions.extend(navigation_nodes)
     actions.extend(hokuyo_node)
+    actions.extend(mqtt)
+    actions.extend(status_publisher)
     return[
         GroupAction
         (
             actions=actions
-        )
+        ),
+        clock_server
     ]
 
 def generate_launch_description():
