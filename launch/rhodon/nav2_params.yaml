@@ -3,7 +3,6 @@
 /*:
   ros__parameters:
     use_sim_time: True
-    
 $(var namespace):
   #-------------------------------------------------
   # (Map Server/Saver)
@@ -73,13 +72,6 @@ $(var namespace):
         z: 0.0
         yaw: 1.57079
 
-  amcl_map_client:
-    ros__parameters:
-
-  amcl_rclcpp_node:
-    ros__parameters:
-
-
   #-------------------------------------------------
   # (BT) MAIN Behaviour Tree
   # Selects and runs the behaviour-tree for navigating
@@ -87,7 +79,6 @@ $(var namespace):
   #-------------------------------------------------
   bt_navigator:
     ros__parameters:
-      use_sim_time: False
       global_frame: map
       robot_base_frame: $(var namespace)_base_link
       odom_topic: odom
@@ -138,7 +129,6 @@ $(var namespace):
       - nav2_planner_selector_bt_node
       - nav2_controller_selector_bt_node
       - nav2_goal_checker_selector_bt_node
-
 
   #-------------------------------------------------
   # (Planner) 
@@ -232,7 +222,6 @@ $(var namespace):
         RotateToGoal.scale: 32.0
         RotateToGoal.slowing_factor: 5.0
         RotateToGoal.lookahead_time: -1.0
-        
 
 
   #-------------------------------------------------
@@ -280,7 +269,7 @@ $(var namespace):
           plugin: "nav2_costmap_2d::InflationLayer"
           cost_scaling_factor: 3.0
           inflation_radius: 0.55
-        always_send_full_costmap: True
+        always_send_full_costmap: true
 
   #-------------------------------------------------
   # (Costmap) Local
@@ -340,7 +329,6 @@ $(var namespace):
 
 
 
-
   #-------------------------------------------------
   # (Recovery Behaviours)
   # fault tolerance of any other server action
@@ -365,7 +353,6 @@ $(var namespace):
       max_rotational_vel: 1.0
       min_rotational_vel: 0.4
       rotational_acc_lim: 3.2
-
 
   #-------------------------------------------------
   # (waypoint_follower)
