@@ -72,8 +72,8 @@ $(var namespace):
       port: 8002                    # MQTT broker TCP port
       username: ""
       password: ""
-      MQTT_topicName: "rhodon"        # main topic
-      MQTT_topics_subscribe: "tasks"  # subtopics to listen
+      MQTT_namespace: "rhodon"        # main topic
+      MQTT_topics_subscribe: "tasks,/giraff/status"  # subtopics to listen
       append_timestamp: false
 
   patrol_times:
@@ -101,7 +101,7 @@ $(var namespace):
 
   status_publisher:
     ros__parameters:
-      output_topic: "ros2mqtt"
+      output_topic: "/ros2mqtt"
       statusRate: 10.0
       map_frame: "map"
       base_frame: "$(var namespace)_base_link"
