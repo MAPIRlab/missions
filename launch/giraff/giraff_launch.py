@@ -101,7 +101,7 @@ def launch_setup(context, *args, **kwargs):
             executable='mqtt_bridge_node',
             name='mqtt_bridge',
             output='screen',
-            prefix='xterm -hold -e',
+            #prefix='xterm -hold -e',
             parameters=[params_yaml_file]            
             ),
     ]
@@ -112,6 +112,7 @@ def launch_setup(context, *args, **kwargs):
             executable='robot_status_publisher_node',
             name='status_publisher',
             output='screen',
+            prefix='xterm -hold -e',
             parameters=[params_yaml_file]
             ), 
     ]  

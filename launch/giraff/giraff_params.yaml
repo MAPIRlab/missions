@@ -53,7 +53,7 @@ $(var namespace):
 
   status_publisher:
     ros__parameters:
-      output_topic: "ros2mqtt"
+      output_topic: "/ros2mqtt"
       statusRate: 10.0
       map_frame: "map"
       base_frame: "$(var namespace)_base_link"
@@ -65,6 +65,6 @@ $(var namespace):
       port: 8002                    # MQTT broker TCP port
       username: ""
       password: ""
-      MQTT_topicName: ""        # main topic
-      MQTT_topics_subscribe: "rhodon"  # subtopics to listen
+      MQTT_namespace: "giraff"        # main topic
+      MQTT_topics_subscribe: "tasks,/rhodon/status"  # subtopics to listen
       append_timestamp: false
