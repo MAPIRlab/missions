@@ -68,3 +68,8 @@ $(var namespace):
       MQTT_namespace: "giraff"        # main topic
       MQTT_topics_subscribe: "tasks,/rhodon/status"  # subtopics to listen
       append_timestamp: false
+
+  mqtt2Nav2:
+    ros__parameters:
+      receive_goal_topic_mqtt: "NavToPose"
+      send_result_topic_mqtt: "NavigationResult"
