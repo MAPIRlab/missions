@@ -2,7 +2,7 @@
 
 /**:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 $(var namespace):
   #-------------------------------------------------
@@ -66,7 +66,7 @@ $(var namespace):
       username: ""
       password: ""
       MQTT_namespace: "giraff"        # main topic
-      MQTT_topics_subscribe: "tasks,/rhodon/status"  # subtopics to listen
+      MQTT_topics_subscribe: "tasks,NavToPose"  # subtopics to listen
       append_timestamp: false
 
   mqtt2Nav2:

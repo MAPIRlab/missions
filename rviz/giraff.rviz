@@ -6,9 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Giraff1
-        - /Giraff1/LaserScan1
-        - /Giraff1/Path1
         - /Giraff1/Path1/Topic1
+        - /Giraff1/GlobalCostmap1
         - /Rhodon1/Map1
         - /Rhodon1/RobotModel1
         - /TDLAS1
@@ -278,6 +277,48 @@ Visualization Manager:
             Reliability Policy: Reliable
             Value: /giraff/plan
           Value: true
+        - Alpha: 0.699999988079071
+          Class: rviz_default_plugins/Map
+          Color Scheme: map
+          Draw Behind: false
+          Enabled: true
+          Name: LocalCostmap
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /giraff/local_costmap/costmap
+          Update Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /giraff/local_costmap/costmap_updates
+          Use Timestamp: false
+          Value: true
+        - Alpha: 0.699999988079071
+          Class: rviz_default_plugins/Map
+          Color Scheme: map
+          Draw Behind: false
+          Enabled: true
+          Name: GlobalCostmap
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /giraff/global_costmap/costmap
+          Update Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /giraff/global_costmap/costmap_updates
+          Use Timestamp: false
+          Value: true
       Enabled: true
       Name: Giraff
     - Class: rviz_common/Group
@@ -463,16 +504,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 23.479698181152344
+      Distance: 36.94575881958008
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.250354528427124
+        Y: 2.4137182235717773
+        Z: 0.02213072031736374
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

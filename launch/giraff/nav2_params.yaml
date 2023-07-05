@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     
 $(var namespace):
 
@@ -63,7 +63,7 @@ $(var namespace):
     ros__parameters:
       global_frame: map
       robot_base_frame: $(var namespace)_base_link
-      odom_topic: $(var namespace)/odom
+      odom_topic: odom
       bt_loop_duration: 10
       default_server_timeout: 20
       # Examples in /opt/ros/humble/share/nav2_bt_navigator/behavior_trees
@@ -212,7 +212,7 @@ $(var namespace):
           mark_threshold: 0
           observation_sources: scan
           scan:
-            topic: $(var namespace)/laser_scan
+            topic: /$(var namespace)/laser_scan
             max_obstacle_height: 2.0
             clearing: True
             marking: True
@@ -242,7 +242,7 @@ $(var namespace):
           enabled: True
           observation_sources: scan
           scan:
-            topic: $(var namespace)/laser_scan
+            topic: /$(var namespace)/laser_scan
             max_obstacle_height: 2.0
             clearing: True
             marking: True
@@ -282,10 +282,10 @@ $(var namespace):
 
   behavior_server:
     ros__parameters:
-      local_costmap_topic: $(var namespace)/local_costmap/costmap_raw
-      global_costmap_topic: $(var namespace)/global_costmap/costmap_raw
-      local_footprint_topic: $(var namespace)/local_costmap/published_footprint
-      global_footprint_topic: $(var namespace)/global_costmap/published_footprint
+      local_costmap_topic: local_costmap/costmap_raw
+      global_costmap_topic: global_costmap/costmap_raw
+      local_footprint_topic: local_costmap/published_footprint
+      global_footprint_topic: global_costmap/published_footprint
       cycle_frequency: 10.0
       behavior_plugins: ["spin", "backup", "drive_on_heading", "assisted_teleop", "wait"]
       spin:

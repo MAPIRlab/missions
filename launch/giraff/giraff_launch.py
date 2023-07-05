@@ -110,7 +110,7 @@ def launch_setup(context, *args, **kwargs):
             executable='mqtt2Nav2',
             name='mqtt2Nav2',
             output='screen',
-            #prefix='xterm -hold -e',
+            prefix='xterm -hold -e',
             parameters=[params_yaml_file]            
             ),
     ]
