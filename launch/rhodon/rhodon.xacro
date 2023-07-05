@@ -150,12 +150,20 @@
     <parent link="$(arg frame_ns)_base_link"/>
     <child link="$(arg frame_ns)_laser_front_link"/>
     
-    # 
-    <origin_old rpy="3.14159 0 0" xyz="0.04 0.0 0.18"/>
-      # for SICK
-    
-    <origin rpy="0 0 0" xyz="0.235 0.0 0.0"/>
-       # for hokuyo_urg
-  
+    <!--<origin_old rpy="3.14159 0 0" xyz="0.04 0.0 0.18"/> --> # for SICK
+    <origin rpy="0 0 0" xyz="0.235 0.0 0.0"/>                   # for hokuyo_urg  
+  </joint>
+
+
+  # PTU D46
+  <!-- Include and invoke the macro which creates a D46-->
+  <xacro:include filename="$(find hal_flir_d46)/urdf/d46.xacro" />
+  <xacro:ptu_d46 name="ptu" /> 
+
+  <!-- Create a fixed joint to connect the PTU to the rest of the robot -->
+  <joint name="base_to_ptu_base" type="fixed">
+    <parent link="$(arg frame_ns)_base_link"/>
+    <child link="ptu_base_link"/>
+    <origin xyz="0.15 0 0.8" rpy="0 0 0"/>
   </joint>
 </robot>
