@@ -205,6 +205,24 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
+    reactive_robot2023 = [
+        Node(
+            package='robot2023',
+            executable='reactive_master',
+            name='reactive_master',
+            output='screen',
+            parameters=[
+                {"/master/linearSpeed" : 0.3},
+                {"/master/stoppingDistance" : 0.3},
+                {"/master/directionTolerance" : 0.1},
+                {"/master/local_frame" : "rhodon_base_link"},
+                {"/master/directionTolerance" : 0.1},
+                {"/master/directionTolerance" : 0.1},
+                {"/master/directionTolerance" : 0.1},
+                {"/master/directionTolerance" : 0.1},
+            ]  
+        ),
+    ]
     actions=[PushRosNamespace(namespace)]
     actions.extend(driver_nodes)
     actions.extend(robot_state_publisher)
@@ -217,6 +235,7 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(patrol)
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
+    actions.extend(reactive_robot2023)
     #actions.extend(apriltags)
     return[
         GroupAction

@@ -126,6 +126,21 @@ def launch_setup(context, *args, **kwargs):
             ), 
     ]  
 
+    reactive_robot2023 = [
+        Node(
+            package='robot2023',
+            executable='reactive_follower',
+            name='reactive_follower',
+            output='screen',
+            parameters=[
+                {"/follower/linearSpeed" : 0.3},
+                {"/follower/directionTolerance" : 0.1},
+                {"/follower/local_frame_id" : "giraff_base_link"},
+                {"/follower/master_loc_topic" : "/rhodon/status"},
+            ]  
+        ),
+    ]
+
     actions=[PushRosNamespace(namespace)]
     actions.extend(giraff_driver)
     actions.extend(robot_state_publisher)
@@ -134,6 +149,7 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(hokuyo_node)
     actions.extend(mqtt)
     actions.extend(status_publisher)
+    actions.extend(reactive_robot2023)
     return[
         GroupAction
         (
