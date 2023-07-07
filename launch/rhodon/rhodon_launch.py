@@ -54,7 +54,21 @@ def launch_setup(context, *args, **kwargs):
             ),
 
     ]
-    
+
+    falcon_tdlas = [
+        Node(
+            package='falcon_tdlas',
+            executable='falcon_tdlas',
+            name='falcon_tdlas',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[
+                {"port" : "/dev/ttyUSB1"},
+                {"topic" : "/falcon/reading"}
+            ]
+            ),
+    ]    
+
     # URDF model (TFs)
     robot_desc = xacro.process_file(os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon.xacro'), mappings={'frame_ns': namespace})
     robot_desc = robot_desc.toprettyxml(indent='  ')
@@ -236,6 +250,7 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
     actions.extend(reactive_robot2023)
+    actions.extend(falcon_tdlas)
     #actions.extend(apriltags)
     return[
         GroupAction
