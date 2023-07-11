@@ -216,7 +216,7 @@ def launch_setup(context, *args, **kwargs):
     apriltags = [
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(apriltags_launch_file)
-        ),
+        ),  
     ]
 
     reactive_robot2023 = [
@@ -225,8 +225,9 @@ def launch_setup(context, *args, **kwargs):
             executable='reactive_master',
             name='reactive_master',
             output='screen',
+            prefix='xterm -hold -e',
             parameters=[
-                {"/master/linearSpeed" : 0.3},
+                {"/master/linearSpeed" : 0.1},
                 {"/master/stoppingDistance" : 0.3},
                 {"/master/directionTolerance" : 0.1},
                 {"/master/local_frame" : "rhodon_base_link"},
@@ -250,7 +251,7 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
     actions.extend(reactive_robot2023)
-    actions.extend(falcon_tdlas)
+    #actions.extend(falcon_tdlas)
     #actions.extend(apriltags)
     return[
         GroupAction
