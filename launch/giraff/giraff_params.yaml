@@ -66,7 +66,7 @@ $(var namespace):
       username: ""
       password: ""
       MQTT_namespace: "giraff"        # main topic
-      MQTT_topics_subscribe: "tasks,NavToPose"  # subtopics to listen
+      MQTT_topics_subscribe: "tasks,NavToPose,run,/rhodon/status"  # subtopics to listen
       append_timestamp: false
 
   mqtt2Nav2:

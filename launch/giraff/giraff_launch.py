@@ -132,7 +132,9 @@ def launch_setup(context, *args, **kwargs):
             executable='reactive_follower',
             name='reactive_follower',
             output='screen',
+            prefix="xterm -hold -e",
             parameters=[
+                {"/follower/offsetDistance" : 1.0},
                 {"/follower/linearSpeed" : 0.3},
                 {"/follower/directionTolerance" : 0.1},
                 {"/follower/local_frame_id" : "giraff_base_link"},
@@ -155,7 +157,6 @@ def launch_setup(context, *args, **kwargs):
         (
             actions=actions
         ),
-        clock_server
     ]
 
 def generate_launch_description():

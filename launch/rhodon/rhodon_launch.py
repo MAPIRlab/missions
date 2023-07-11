@@ -17,7 +17,6 @@ def launch_setup(context, *args, **kwargs):
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
     apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_launch.py')
     rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
-    urdf = os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf.xml')
     namespace = LaunchConfiguration('namespace').perform(context)
     
     # HW_DRIVERS
@@ -70,17 +69,12 @@ def launch_setup(context, *args, **kwargs):
     ]    
 
     # URDF model (TFs)
-    robot_desc = xacro.process_file(os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon.xacro'), mappings={'frame_ns': namespace})
-    robot_desc = robot_desc.toprettyxml(indent='  ')
     robot_state_publisher = [
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{'robot_description': robot_desc}],
-            arguments=[urdf]
-            ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_urdf_launch.py')
+            )
+        )
     ]
             
     # Keyboard Control
