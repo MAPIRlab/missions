@@ -156,14 +156,33 @@
 
 
   # PTU D46
-  <!-- Include and invoke the macro which creates a D46-->
+  <!--
   <xacro:include filename="$(find hal_flir_d46)/urdf/d46.xacro" />
   <xacro:ptu_d46 name="ptu" /> 
 
-  <!-- Create a fixed joint to connect the PTU to the rest of the robot -->
+  # Create a fixed joint to connect the PTU to the rest of the robot
   <joint name="base_to_ptu_base" type="fixed">
     <parent link="$(arg frame_ns)_base_link"/>
     <child link="ptu_base_link"/>
     <origin xyz="0.15 0 0.8" rpy="0 0 0"/>
+  </joint>
+  -->
+
+  # PTU WXXMS Interbotix
+  <xacro:include filename="$(find interbotix_xsturret_descriptions)/urdf/wxxms.urdf.xacro" />
+    
+  # Create a fixed joint to connect the PTU to the rest of the robot
+  <joint name="base_to_ptu_base" type="fixed">
+    <parent link="$(arg frame_ns)_base_link"/>
+    <child link="wxxms/base_link"/>
+    <origin xyz="0.15 0 0.8" rpy="0 0 0"/>
+  </joint>
+
+  # Create a fixed joint to connect the Camera to the PTU
+  <link name="camera"/>
+  <joint name="camera_to_ptu_surface" type="fixed">
+    <parent link="wxxms/surface_link"/>
+    <child link="camera"/>
+    <origin xyz="0.0 0 0.0" rpy="-1.57079 0 -1.57079"/>
   </joint>
 </robot>
