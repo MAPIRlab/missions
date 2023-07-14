@@ -7,8 +7,10 @@ Panels:
         - /Global Options1
         - /Status1
         - /Map1/Topic1
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.5777778029441833
-    Tree Height: 448
+    Tree Height: 403
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -26,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -253,39 +255,79 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
-        base_footprint:
+        All Enabled: false
+        camera:
           Value: true
-        base_link:
+        simbot_UpperBody:
+          Value: false
+        simbot_base_link:
+          Value: false
+        simbot_body:
+          Value: false
+        simbot_laser_back_link:
+          Value: false
+        simbot_laser_front_link:
+          Value: false
+        simbot_left_wheel:
+          Value: false
+        simbot_right_wheel:
+          Value: false
+        tag36h11:0:
+          Value: false
+        wxxms/base_link:
           Value: true
-        laser_link:
-          Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
-        range_bearing_link:
-          Value: true
+        wxxms/pan_link:
+          Value: false
+        wxxms/surface_link:
+          Value: false
+        wxxms/tilt_link:
+          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: false
+      Show Names: true
       Tree:
-        map:
-          odom:
-            base_footprint:
-              base_link:
-                laser_link:
-                  {}
-                range_bearing_link:
-                  {}
+        simbot_base_link:
+          simbot_UpperBody:
+            {}
+          simbot_body:
+            {}
+          simbot_laser_back_link:
+            {}
+          simbot_laser_front_link:
+            {}
+          simbot_left_wheel:
+            {}
+          simbot_right_wheel:
+            {}
+          wxxms/base_link:
+            wxxms/pan_link:
+              wxxms/tilt_link:
+                wxxms/surface_link:
+                  camera:
+                    tag36h11:0:
+                      {}
       Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: ImageRect
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /simbot/v4l2/image_rect
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: simbot_base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -328,33 +370,35 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 14.648482322692871
+      Distance: 1.506270170211792
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.6590133905410767
-        Y: 1.867486834526062
-        Z: -0.722756564617157
+        X: 0.5186827182769775
+        Y: -0.27748870849609375
+        Z: 1.0546238422393799
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5453972816467285
+      Pitch: 0.014796978794038296
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.5703990459442139
+      Yaw: 3.145402193069458
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 766
+  Height: 931
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd00000004000000000000016a0000024ffc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c00610079007301000000470000024f000000d700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000011200000295fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000004c00000295000000ad00fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000046000000046fc0100000002fb0000000800540069006d00650100000000000004600000031700fffffffb0000000800540069006d00650100000000000004500000000000000000000002f00000024f00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  ImageRect:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd00000004000000000000016a000002fdfc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000021e000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000120049006d00610067006500520065006300740100000261000000d90000002800ffffff000000010000011200000295fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000004c00000295000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004d400000046fc0100000002fb0000000800540069006d00650100000000000004d40000026600fffffffb0000000800540069006d0065010000000000000450000000000000000000000364000002fd00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -363,6 +407,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: true
-  Width: 1120
-  X: 2251
-  Y: 174
+  Width: 1236
+  X: 675
+  Y: 43

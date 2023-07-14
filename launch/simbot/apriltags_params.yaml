@@ -30,7 +30,7 @@ $(var namespace):
     ros__parameters:
       image_transport: raw    # image format
       family: 36h11           # tag family name
-      size: 0.173             # tag edge size in meter
+      size: 0.261             # tag edge size in meter
       max_hamming: 0          # maximum allowed hamming distance (corrected bits)
 
       # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
@@ -43,10 +43,10 @@ $(var namespace):
         debug: False        # write additional debugging images to current working directory
 
       # optional list of tags
-      tag:
-        ids: [42]            # tag ID
-        frames: [tag_link]  # optional frame name
-        sizes: [0.173]   # optional tag-specific edge size
+      #tag:
+      #  ids: [12]            # tag ID
+      #  frames: [tag_link]  # optional frame name
+      #  sizes: [0.173]   # optional tag-specific edge size
   
   hal_flir_d46:
     ros__parameters:
@@ -75,10 +75,11 @@ $(var namespace):
       min_thresold_command_input_pan: 0.01
       min_thresold_command_input_tilt: 0.01
   
+
   ptu_tracking:
     ros__parameters:
-      tag_frame_id: tag_link
+      tag_frame_id: tag36h11:0
       camera_frame_id: camera
-      ptu_frame_id: ptu_base_link
+      ptu_frame_id: wxxms/base_link
       ptu_state_topic: /ptu/state
-      loopRate: 1.0
+      loopRate: 4.0
