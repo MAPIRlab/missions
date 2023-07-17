@@ -30,7 +30,7 @@ def generate_launch_description():
     use_sim_time = True
     remappings=[]
     params_yaml_file = ParameterFile( os.path.join(my_dir, 'launch', 'rhodon', 'nav2_params.yaml'), allow_substs=True)
-    map_file = os.path.join(my_dir, 'maps', 'mapirlab_april_23.yaml')
+    map_file = os.path.join(my_dir, 'maps', 'mapirlab.yaml')
     
     logger = LaunchConfiguration("log_level")
     

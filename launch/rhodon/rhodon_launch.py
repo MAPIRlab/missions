@@ -54,19 +54,6 @@ def launch_setup(context, *args, **kwargs):
 
     ]
 
-    falcon_tdlas = [
-        Node(
-            package='falcon_tdlas',
-            executable='falcon_tdlas',
-            name='falcon_tdlas',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[
-                {"port" : "/dev/ttyUSB1"},
-                {"topic" : "/falcon/reading"}
-            ]
-            ),
-    ]    
 
     # URDF model (TFs)
     robot_state_publisher = [
@@ -232,10 +219,39 @@ def launch_setup(context, *args, **kwargs):
             ]  
         ),
     ]
+
+
+    falcon_tdlas = [
+        Node(
+            package='falcon_tdlas',
+            executable='falcon_tdlas',
+            name='falcon_tdlas',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[
+                {"port" : "/dev/ttyUSB0"},
+                {"topic" : "/falcon/reading"}
+            ]
+            ),
+    ]    
+
+    measurement_logger = [
+        Node(
+            package='robot2023',
+            executable='log_measurements',
+            name='log_measurements',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[
+                {"file_path" : "/home/mapir/mapir_ws/measurement_log"},
+            ]
+        )
+    ]
+
     actions=[PushRosNamespace(namespace)]
     actions.extend(driver_nodes)
     actions.extend(robot_state_publisher)
-    #actions.extend(keyboard_control)
+    actions.extend(keyboard_control)
     #actions.extend(task_manager)
     actions.extend(rviz)
     actions.extend(navigation)
@@ -245,7 +261,8 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
     actions.extend(reactive_robot2023)
-    #actions.extend(falcon_tdlas)
+    actions.extend(falcon_tdlas)
+    actions.extend(measurement_logger)
     #actions.extend(apriltags)
     return[
         GroupAction
