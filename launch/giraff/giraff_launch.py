@@ -46,6 +46,7 @@ def launch_setup(context, *args, **kwargs):
         package='urg_node',
         executable='urg_node_driver',
         name='hokuyo_front',
+        prefix='xterm -hold -e',
         output='screen',
         parameters=[params_yaml_file]
         ),  
@@ -134,7 +135,7 @@ def launch_setup(context, *args, **kwargs):
             output='screen',
             prefix="xterm -hold -e",
             parameters=[
-                {"/follower/offsetDistance" : 1.0},
+                {"/follower/offsetDistance" : 1.5},
                 {"/follower/linearSpeed" : 0.3},
                 {"/follower/directionTolerance" : 0.1},
                 {"/follower/local_frame_id" : "giraff_base_link"},
@@ -142,6 +143,30 @@ def launch_setup(context, *args, **kwargs):
             ]  
         ),
     ]
+
+    start_async_slam_toolbox_node = [
+        Node(
+            parameters=[
+            params_yaml_file,
+            {'use_sim_time': False}
+            ],
+            package='slam_toolbox',
+            executable='async_slam_toolbox_node',
+            name='slam_toolbox',
+            prefix="xterm -hold -e",
+            output='screen'
+        )
+    ]
+    keyboard_control=[
+        Node(
+            package='keyboard_control',
+            executable='keyboard_control_plus',
+            name='keyboard_control',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file]
+            ),
+    ] 
 
     actions=[PushRosNamespace(namespace)]
     actions.extend(giraff_driver)
@@ -151,7 +176,9 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(hokuyo_node)
     actions.extend(mqtt)
     actions.extend(status_publisher)
-    actions.extend(reactive_robot2023)
+    #actions.extend(reactive_robot2023)
+    #actions.extend(start_async_slam_toolbox_node)
+    actions.extend(keyboard_control)
     return[
         GroupAction
         (

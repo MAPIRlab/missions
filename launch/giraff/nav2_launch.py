@@ -30,7 +30,7 @@ def generate_launch_description():
     use_sim_time = True
     remappings=[]
     params_yaml_file = ParameterFile( os.path.join(my_dir, 'launch', 'giraff', 'nav2_params.yaml'), allow_substs=True)
-    map_file = os.path.join(my_dir, 'maps', 'mapirlab_april_23.yaml')
+    map_file = os.path.join(my_dir, 'maps', 'parking.yaml')
     
     logger = LaunchConfiguration("log_level")
     
@@ -50,6 +50,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
+            prefix='xterm -hold -e',
             parameters=[{'use_sim_time': use_sim_time},
                         {'yaml_filename' : map_file}],
             remappings=remappings
@@ -63,6 +64,7 @@ def generate_launch_description():
             output='screen',
             parameters=[params_yaml_file],
             remappings=remappings,
+            prefix='xterm -hold -e',
             arguments=['--ros-args', '--log-level', logger],
             ),
 
@@ -129,7 +131,8 @@ def generate_launch_description():
                                         'controller_server',
                                         'bt_navigator',
                                         'behavior_server',
-                                        'waypoint_follower']
+                                        'waypoint_follower'
+                                        ]
                         }
                        ]
             )
