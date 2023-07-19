@@ -18,16 +18,13 @@ def launch_setup(context, *args, **kwargs):
     # URDF model (TFs)
     robot_desc = xacro.process_file(os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon.xacro'), mappings={'frame_ns': namespace})
     robot_desc = robot_desc.toprettyxml(indent='  ')
-    robot_state_publisher = [
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{'robot_description': robot_desc}],
-            arguments=[urdf]
-            ),
-    ]
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='screen',
+        parameters=[{'robot_description': robot_desc}],
+    )
 
     return [
         robot_state_publisher
