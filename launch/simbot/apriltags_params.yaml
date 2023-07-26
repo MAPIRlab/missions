@@ -82,4 +82,4 @@ $(var namespace):
       camera_frame_id: camera
       ptu_frame_id: wxxms/base_link
       ptu_state_topic: /ptu/state
-      loopRate: 4.0
+      loopRate: 5.0

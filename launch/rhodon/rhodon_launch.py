@@ -6,8 +6,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.parameter_descriptions import ParameterFile
-from launch_ros.actions import Node, PushRosNamespace
+from launch_ros.actions import Node, PushRosNamespace, ComposableNodeContainer
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.descriptions import ComposableNode
 import xacro
 
 def launch_setup(context, *args, **kwargs):
@@ -15,10 +16,15 @@ def launch_setup(context, *args, **kwargs):
     pkg_dir = get_package_share_directory("missions_pkg")
     params_yaml_file = ParameterFile( os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml'), allow_substs=True)
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
-    apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_launch.py')
+    apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'simbot', 'apriltags_launch.py')
+    ptu_launch_file = os.path.join(pkg_dir, 'launch', 'simbot', 'simbot_apriltags_launch.py')
+    
     rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
     namespace = LaunchConfiguration('namespace').perform(context)
     
+    interbotix_xsturret_control_path = get_package_share_directory("interbotix_xsturret_control")
+    DeclareLaunchArgument('interbotix_xsturret_control_path', default_value=interbotix_xsturret_control_path)
+
     # HW_DRIVERS
     #===========    
     driver_nodes =[
@@ -196,7 +202,7 @@ def launch_setup(context, *args, **kwargs):
     # Camera and AprilTags
     apriltags = [
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(apriltags_launch_file)
+            PythonLaunchDescriptionSource(ptu_launch_file)
         ),  
     ]
 
@@ -243,9 +249,45 @@ def launch_setup(context, *args, **kwargs):
             output='screen',
             prefix="xterm -hold -e",
             parameters=[
-                {"file_path" : "/home/mapir/mapir_ws/measurement_log"},
+                {"file_path" : "/home/mapir/mapir_ws/measurement_log1"},
             ]
         )
+    ]
+
+    start_async_slam_toolbox_node = [
+        Node(
+            parameters=[
+            params_yaml_file,
+            {'use_sim_time': False}
+            ],
+            package='slam_toolbox',
+            executable='async_slam_toolbox_node',
+            name='slam_toolbox',
+            output='screen'
+        )
+    ]
+
+    ptu_tracking = [
+        Node(
+            package='ptu_tracking',
+            executable='ptu_tracking',
+            name='ptu_tracking',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            ),    
+        Node(
+            package='interbotix_xs_sdk',
+            executable='xs_sdk',
+            name='interbotix_xs_sdk',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[{
+                'motor_configs': os.path.join(interbotix_xsturret_control_path, 'config', 'wxxms.yaml'),
+                'mode_configs': os.path.join(interbotix_xsturret_control_path, 'config', 'modes.yaml'),
+                'load_configs': False
+                }],
+            ),
     ]
 
     actions=[PushRosNamespace(namespace)]
@@ -260,15 +302,16 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(patrol)
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
-    actions.extend(reactive_robot2023)
+    #actions.extend(reactive_robot2023)
     actions.extend(falcon_tdlas)
     actions.extend(measurement_logger)
-    #actions.extend(apriltags)
+    #actions.extend(start_async_slam_toolbox_node)
+    actions.extend(apriltags)
     return[
         GroupAction
         (
             actions=actions
-        )
+        ),
     ]
 
 def generate_launch_description():

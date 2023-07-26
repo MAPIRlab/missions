@@ -34,8 +34,8 @@ def launch_setup(context, *args, **kwargs):
             prefix="xterm -hold -e",
             arguments=['-d' + rviz_file],
             remappings=[
-                ("/initialpose", "/simbot/initialpose"),
-                ("/goal_pose", "/simbot/goal_pose")
+                ("/initialpose", "/rhodon/initialpose"),
+                ("/goal_pose", "/rhodon/goal_pose")
             ]    
         ),
     ]
@@ -79,7 +79,7 @@ def launch_setup(context, *args, **kwargs):
                                     'pixel_format': 'YUYV',
                                     'output_encoding': 'rgb8',
                                     'image_size': [640, 480],
-                                    'camera_info_url': 'file:///home/jgmonroy/.ros/camera_info/owlotech_camera.yaml',
+                                    'camera_info_url': 'file:///home/mapir/.ros/camera_info/owlotech_camera.yaml',
                                     'publish_rate': 30
                                     }],
                     extra_arguments=[{'use_intra_process_comms': True}]
@@ -102,7 +102,7 @@ def launch_setup(context, *args, **kwargs):
                     name = "apriltag",
                     namespace =  "apriltag",
                     parameters=[params_yaml_file],
-                    remappings=[("/simbot/apriltag/image_rect", "/simbot/v4l2/image_rect"), ("/simbot/apriltag/camera_info", "/simbot/v4l2/camera_info")],
+                    remappings=[("/rhodon/apriltag/image_rect", "/rhodon/v4l2/image_rect"), ("/rhodon/apriltag/camera_info", "/rhodon/v4l2/camera_info")],
                     extra_arguments=[{'use_intra_process_comms': True}]
                 ),
             ],
@@ -151,12 +151,12 @@ def launch_setup(context, *args, **kwargs):
     # ===================
     # SET what to launch
     # ===================
-    actions=[PushRosNamespace(namespace)]
+    actions=[]
     #actions.extend(ptu_d46)
     actions.extend(ptu_interbotix)
-    actions.extend(rviz)
+    #actions.extend(rviz)
     actions.extend(apriltag)
-    actions.extend(robot_state_publisher)
+    #actions.extend(robot_state_publisher)
     actions.extend(ptu_tracking);
     return[
         GroupAction
