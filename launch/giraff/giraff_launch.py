@@ -91,11 +91,6 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
-    clock_server = Node(
-        package='robot2023',
-        executable='clock_server'
-    )
-
     mqtt = [
         Node(
             package='mqtt_bridge',
@@ -126,23 +121,6 @@ def launch_setup(context, *args, **kwargs):
             parameters=[params_yaml_file]
             ), 
     ]  
-
-    reactive_robot2023 = [
-        Node(
-            package='robot2023',
-            executable='reactive_follower',
-            name='reactive_follower',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[
-                {"/follower/offsetDistance" : 1.5},
-                {"/follower/linearSpeed" : 0.3},
-                {"/follower/directionTolerance" : 0.1},
-                {"/follower/local_frame_id" : "giraff_base_link"},
-                {"/follower/master_loc_topic" : "/rhodon/status"},
-            ]  
-        ),
-    ]
 
     start_async_slam_toolbox_node = [
         Node(
@@ -176,9 +154,8 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(hokuyo_node)
     actions.extend(mqtt)
     actions.extend(status_publisher)
-    #actions.extend(reactive_robot2023)
     #actions.extend(start_async_slam_toolbox_node)
-    actions.extend(keyboard_control)
+    #actions.extend(keyboard_control)
     return[
         GroupAction
         (

@@ -8,14 +8,12 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.parameter_descriptions import ParameterFile
 from launch_ros.actions import Node, PushRosNamespace
 from ament_index_python.packages import get_package_share_directory
-import xacro
 
 def launch_setup(context, *args, **kwargs):
     # Get the launch directory
     pkg_dir = get_package_share_directory("missions_pkg")
     params_yaml_file = ParameterFile( os.path.join(pkg_dir, 'launch', 'rhodon', 'rhodon_params.yaml'), allow_substs=True)
     nav2_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'nav2_launch.py')
-    apriltags_launch_file = os.path.join(pkg_dir, 'launch', 'rhodon', 'apriltags_launch.py')
     rviz_file = os.path.join(pkg_dir, 'rviz', 'rhodon.rviz')
     namespace = LaunchConfiguration('namespace').perform(context)
     
@@ -192,66 +190,11 @@ def launch_setup(context, *args, **kwargs):
             parameters=[params_yaml_file]
             ), 
     ]  
-    
-    # Camera and AprilTags
-    apriltags = [
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(apriltags_launch_file)
-        ),  
-    ]
-
-    reactive_robot2023 = [
-        Node(
-            package='robot2023',
-            executable='reactive_master',
-            name='reactive_master',
-            output='screen',
-            prefix='xterm -hold -e',
-            parameters=[
-                {"/master/linearSpeed" : 0.1},
-                {"/master/stoppingDistance" : 0.3},
-                {"/master/directionTolerance" : 0.1},
-                {"/master/local_frame" : "rhodon_base_link"},
-                {"/master/directionTolerance" : 0.1},
-                {"/master/directionTolerance" : 0.1},
-                {"/master/directionTolerance" : 0.1},
-                {"/master/directionTolerance" : 0.1},
-            ]  
-        ),
-    ]
-
-
-    falcon_tdlas = [
-        Node(
-            package='falcon_tdlas',
-            executable='falcon_tdlas',
-            name='falcon_tdlas',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[
-                {"port" : "/dev/ttyUSB0"},
-                {"topic" : "/falcon/reading"}
-            ]
-            ),
-    ]    
-
-    measurement_logger = [
-        Node(
-            package='robot2023',
-            executable='log_measurements',
-            name='log_measurements',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[
-                {"file_path" : "/home/mapir/mapir_ws/measurement_log"},
-            ]
-        )
-    ]
 
     actions=[PushRosNamespace(namespace)]
     actions.extend(driver_nodes)
     actions.extend(robot_state_publisher)
-    actions.extend(keyboard_control)
+    #actions.extend(keyboard_control)
     #actions.extend(task_manager)
     actions.extend(rviz)
     actions.extend(navigation)
@@ -260,10 +203,6 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(patrol)
     #actions.extend(battery_manager)
     actions.extend(status_publisher)
-    actions.extend(reactive_robot2023)
-    actions.extend(falcon_tdlas)
-    actions.extend(measurement_logger)
-    #actions.extend(apriltags)
     return[
         GroupAction
         (
