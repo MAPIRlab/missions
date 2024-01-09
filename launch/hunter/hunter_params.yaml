@@ -1,0 +1,108 @@
+/*:
+  ros__parameters:
+    use_sim_time: True
+
+# PARAMETERS FOR RHODON ROBOT
+$(var namespace):
+  #-------------------------------------------------
+  # HW DRIVERS
+  #-------------------------------------------------
+  ros2aria:
+    ros__parameters:
+      port: "/dev/sensors/patrolbot"
+      serial_baud: 115200
+      odom_frame: "$(var namespace)_odom"
+      base_link_frame: "$(var namespace)_base_link"
+
+
+  hokuyo_front:
+    ros__parameters:
+      angle_max: 1.4
+      angle_min: -1.4
+      ip_port: 1853723
+      #serial_port: '/dev/sensors/hokuyo_urg'
+      serial_port: '/dev/ttyACM0'
+      serial_baud: 115200
+      laser_frame_id: '$(var namespace)_laser_front_link'
+      laser_topic_name: 'scan_front'
+      calibrate_time: False
+      default_user_latency: -0.2
+      diagnostics_tolerance: 0.05
+      diagnostics_window_time: 5.0
+      error_limit: 4
+      get_detailed_status: False
+      publish_intensity: False
+      publish_multiecho: False
+      cluster: 1
+      skip: 0
+
+  hokuyo_back:
+    ros__parameters:
+      angle_max: 1.4
+      angle_min: -1.4
+      ip_port: 1853723
+      #serial_port: '/dev/sensors/hokuyo_urg'
+      serial_port: '/dev/ttyACM1'
+      serial_baud: 115200
+      laser_frame_id: '$(var namespace)_laser_back_link'
+      laser_topic_name: 'scan_back'
+      calibrate_time: False
+      default_user_latency: -0.2
+      diagnostics_tolerance: 0.05
+      diagnostics_window_time: 5.0
+      error_limit: 4
+      get_detailed_status: False
+      publish_intensity: False
+      publish_multiecho: False
+      cluster: 1
+      skip: 0
+
+  keyboard_control:
+    ros__parameters:
+      linear_v_inc: 0.1
+      angular_v_inc: 0.3
+      publish_topic: 'cmd_vel'
+
+  #-------------------------------------------------
+  # UTILS
+  #-------------------------------------------------
+  mqtt_bridge:
+    ros__parameters:
+      host: "150.214.109.137"       # MQTT broker ip
+      port: 8002                    # MQTT broker TCP port
+      username: ""
+      password: ""
+      MQTT_namespace: "rhodon"        # main topic
+      MQTT_topics_subscribe: "tasks,NavToPose,/giraff/status,/reactive"  # subtopics to listen
+      append_timestamp: false
+
+  patrol_times:
+    ros__parameters:
+      # Add as many poses in the patrol as desired (starts in pose_1)
+      pose_1: [0.0,0.0,0.0,0.0,0.0,0.0,1.0]   # lab 2.3.7
+      pose_2: [0.0,5.0,0.0,0.0,0.0,0.0,1.0]   # lab 2.3.6
+      pose_3: [4.6,-2.3,0.0,0.0,0.0,0.0,1.0]  # corridor
+
+  battery_manager:
+    ros__parameters:
+      # main params
+      verbose: False
+      input_battery_topic: "battery"
+      output_battery_topic: "battery_filtered"
+      filter_lenght_samples: 30
+      publish_rate: 2.0
+      low_battery_voltage: 24.2
+      critial_battery_voltage: 24.0
+
+      # Log params
+      create_log: False
+      log_directory_path: "~"
+      log_interval_sec: 20
+
+  status_publisher:
+    ros__parameters:
+      output_topic: "/ros2mqtt"
+      statusRate: 10.0
+      map_frame: "map"
+      base_frame: "$(var namespace)_base_link"
+      battery_topic: "battery_filtered"
