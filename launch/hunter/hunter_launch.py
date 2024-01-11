@@ -37,6 +37,15 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
+    # NMEA GPS
+    nmea_gps_pkg_dir = get_package_share_directory("nmea_navsat_driver")
+    nmea_gps_launch_file = os.path.join(nmea_gps_pkg_dir, 'launch', 'nmea_serial_driver.launch.py')
+    nmeaGPSnavsat = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(nmea_gps_launch_file)
+        ),
+    ]
+
     # RVIZ
     rviz_file = os.path.join(pkg_dir, 'rviz', 'hunter.rviz')    
     rviz=[
@@ -59,7 +68,8 @@ def launch_setup(context, *args, **kwargs):
 
     actions=[PushRosNamespace(namespace)]
     actions.extend(ouster3DLidar)
-    actions.extend(astraRGBDcamera)    
+    actions.extend(astraRGBDcamera)
+    actions.extend(nmeaGPSnavsat)
     actions.extend(rviz)
     return[
         GroupAction
