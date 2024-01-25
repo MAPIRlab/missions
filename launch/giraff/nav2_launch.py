@@ -30,7 +30,7 @@ def generate_launch_description():
     use_sim_time = True
     remappings=[]
     params_yaml_file = ParameterFile( os.path.join(my_dir, 'launch', 'giraff', 'nav2_params.yaml'), allow_substs=True)
-    map_file = os.path.join(my_dir, 'maps', 'parking.yaml')
+    map_file = os.path.join(my_dir, 'maps', 'mapirlab2024.yaml')
     
     logger = LaunchConfiguration("log_level")
     
@@ -116,6 +116,16 @@ def generate_launch_description():
             output='screen',
             parameters=[params_yaml_file],
             remappings=remappings),
+
+
+        #Node(
+        #    package='rf2o_laser_odometry',
+        #    executable='rf2o_laser_odometry_node',
+        #    name='rf2o_laser_odometry',
+        #    output='screen',
+        #    prefix='xterm -hold -e',
+        #    parameters=[params_yaml_file],
+        #),
 
         # LIFECYCLE MANAGER
         Node(

@@ -21,7 +21,6 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.parameter_descriptions import ParameterFile
 from ament_index_python.packages import get_package_share_directory
-import xacro
 
 def launch_setup(context, *args, **kwargs):
     # Get the launch directory
@@ -37,7 +36,10 @@ def launch_setup(context, *args, **kwargs):
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory('giraff_ros2_driver'), 'launch', 'giraff_launch.py')
-            )
+            ),
+            launch_arguments={
+                'publish_odom': 'True' # using RF2O instead (in nav2_launch.py)
+            }.items()
         )
     ]
 
@@ -46,7 +48,7 @@ def launch_setup(context, *args, **kwargs):
         package='urg_node',
         executable='urg_node_driver',
         name='hokuyo_front',
-        prefix='xterm -hold -e',
+        #prefix='xterm -hold -e',
         output='screen',
         parameters=[params_yaml_file]
         ),  
@@ -60,22 +62,6 @@ def launch_setup(context, *args, **kwargs):
         )
     ]
 
-    #robot description for state_pùblisher
-    robot_desc = xacro.process_file(os.path.join(my_dir, 'giraff.xacro'), mappings={'frame_ns': namespace})
-    robot_desc = robot_desc.toprettyxml(indent='  ')
-
-    robot_state_publisher = [
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            parameters=[
-                {
-                    'use_sim_time': True, 
-                    'robot_description': robot_desc
-                }
-            ],
-        )
-    ]
     rviz = [
         Node(
             package='rviz2',
@@ -90,11 +76,6 @@ def launch_setup(context, *args, **kwargs):
             ]
         ),
     ]
-
-    clock_server = Node(
-        package='robot2023',
-        executable='clock_server'
-    )
 
     mqtt = [
         Node(
@@ -156,7 +137,11 @@ def launch_setup(context, *args, **kwargs):
             prefix="xterm -hold -e",
             output='screen'
         )
+        # To save the map run in a different terminal:
+        #   ros2 run nav2_map_server map_saver_cli -f my_map
+        # Does not need the map server to be running
     ]
+
     keyboard_control=[
         Node(
             package='keyboard_control',
@@ -168,17 +153,45 @@ def launch_setup(context, *args, **kwargs):
             ),
     ] 
 
+    PID  =[
+        Node(
+            package="minirae_lite",
+            executable="minirae_lite_node",
+            name="minirae_lite",
+            prefix="xterm -hold -e",
+            parameters=[
+                {"port":"/dev/ttyUSB1"}
+            ]
+        )
+    ] 
+
+    anemometer  =[
+        Node(
+            package="windsonic",
+            executable="windsonic_node",
+            name="windsonic",
+            prefix="xterm -hold -e",
+            parameters=[
+                {"port":"/dev/ttyUSB0"},
+                {"frame_id":"giraff_base_link"}
+            ]
+        )
+    ] 
+
     actions=[PushRosNamespace(namespace)]
-    actions.extend(giraff_driver)
-    actions.extend(robot_state_publisher)
-    actions.extend(rviz)
-    actions.extend(navigation_nodes)
-    actions.extend(hokuyo_node)
-    actions.extend(mqtt)
-    actions.extend(status_publisher)
+    #actions.extend(robot_state_publisher)
+    #actions.extend(rviz)
+    #actions.extend(mqtt)
+    #actions.extend(status_publisher)
     #actions.extend(reactive_robot2023)
     #actions.extend(start_async_slam_toolbox_node)
+    
+    actions.extend(giraff_driver)
+    actions.extend(navigation_nodes)
+    actions.extend(hokuyo_node)
     actions.extend(keyboard_control)
+    #actions.extend(PID)
+    #actions.extend(anemometer)
     return[
         GroupAction
         (

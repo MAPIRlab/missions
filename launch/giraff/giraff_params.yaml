@@ -17,7 +17,7 @@ $(var namespace):
       serial_port: '/dev/ttyACM0'
       serial_baud: 115200
       laser_frame_id: '$(var namespace)_laser_frame'
-      laser_topic_name: 'laser_scan'
+      laser_topic_name: laser_scan
       calibrate_time: False
       default_user_latency: -0.2
       diagnostics_tolerance: 0.05
@@ -153,4 +153,4 @@ $(var namespace):
     ros__parameters:
       linear_v_inc: 0.1
       angular_v_inc: 0.3
-      publish_topic: 'cmd_vel'
+      publish_topic: cmd_vel
