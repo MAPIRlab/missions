@@ -18,7 +18,7 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration('namespace').perform(context)
     
     
-    # OUSTER 3D LIDAR
+    # OUSTER 3D LIDAR (10Hz)
     ouster_pkg_dir = get_package_share_directory("ros2_ouster")
     ouster_launch_file = os.path.join(ouster_pkg_dir, 'launch', 'driver_launch.py')
     ouster3DLidar = [
@@ -28,7 +28,7 @@ def launch_setup(context, *args, **kwargs):
     ] 
             
     
-    # ASTRA RGB-D
+    # ASTRA RGB-D (10Hz)
     astra_pkg_dir = get_package_share_directory("astra_camera")
     astra_launch_file = os.path.join(astra_pkg_dir, 'launch', 'multi_astra_mini.launch.py')
     astraRGBDcamera = [
@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
-    # NMEA GPS
+    # NMEA GPS (1Hz)
     nmea_gps_pkg_dir = get_package_share_directory("nmea_navsat_driver")
     nmea_gps_launch_file = os.path.join(nmea_gps_pkg_dir, 'launch', 'nmea_serial_driver.launch.py')
     nmeaGPSnavsat = [
