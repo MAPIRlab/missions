@@ -28,7 +28,7 @@ def launch_setup(context, *args, **kwargs):
     ] 
             
     
-    # ASTRA RGB-D (10Hz)
+    # ASTRA RGB-D (30Hz)
     astra_pkg_dir = get_package_share_directory("astra_camera")
     astra_launch_file = os.path.join(astra_pkg_dir, 'launch', 'multi_astra_mini.launch.py')
     astraRGBDcamera = [
@@ -36,6 +36,33 @@ def launch_setup(context, *args, **kwargs):
             PythonLaunchDescriptionSource(astra_launch_file)
         ),
     ]
+
+    # USB-CAM ()
+    usb_cam = [
+        Node(
+            package='usb_cam',
+            executable='usb_cam_node_exe',
+            name='usb_cam',
+            namespace='usb_cam_0',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            arguments=[],
+            remappings=[]    
+        ),
+        Node(
+            package='usb_cam',
+            executable='usb_cam_node_exe',
+            name='usb_cam',
+            namespace='usb_cam_1',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            arguments=[],
+            remappings=[]    
+        ),
+    ]
+
 
     # NMEA GPS (1Hz)
     nmea_gps_pkg_dir = get_package_share_directory("nmea_navsat_driver")
@@ -47,7 +74,7 @@ def launch_setup(context, *args, **kwargs):
     ]
 
     # RVIZ
-    rviz_file = os.path.join(pkg_dir, 'rviz', 'hunter.rviz')    
+    rviz_file = os.path.join(pkg_dir, 'rviz', 'hunter_usb_cam.rviz')    
     rviz=[
         Node(
             package='rviz2',
@@ -67,9 +94,10 @@ def launch_setup(context, *args, **kwargs):
     
 
     actions=[PushRosNamespace(namespace)]
-    actions.extend(ouster3DLidar)
-    actions.extend(astraRGBDcamera)
-    actions.extend(nmeaGPSnavsat)
+    #actions.extend(ouster3DLidar)
+    #actions.extend(astraRGBDcamera)
+    actions.extend(usb_cam)
+    #actions.extend(nmeaGPSnavsat)
     actions.extend(rviz)
     return[
         GroupAction
