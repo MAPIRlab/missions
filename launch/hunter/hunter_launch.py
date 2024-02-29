@@ -97,7 +97,7 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(ouster3DLidar)
     #actions.extend(astraRGBDcamera)
     actions.extend(usb_cam)
-    #actions.extend(nmeaGPSnavsat)
+    actions.extend(nmeaGPSnavsat)
     actions.extend(rviz)
     return[
         GroupAction
