@@ -18,9 +18,27 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration('namespace').perform(context)
     
     
+    # AGILEX HUNTER BASE (can bus)
+    hunter_pkg_dir = get_package_share_directory("hunter_base")
+    hunter_launch_file = os.path.join(hunter_pkg_dir, 'launch', 'hunter_base.launch.py')
+    hunter_base = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(hunter_launch_file)
+        ),
+    ]
+
+    # Keyboard Controll (publish cmd_vel)
+    keybaord_pkg_dir = get_package_share_directory("keyboard_control")
+    keyboard_launch_file = os.path.join(keybaord_pkg_dir, 'launch', 'keyboard_control.launch')
+    keyboard_control = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(keyboard_launch_file)
+        ),
+    ]
+
     # OUSTER 3D LIDAR (10Hz)
-    ouster_pkg_dir = get_package_share_directory("ros2_ouster")
-    ouster_launch_file = os.path.join(ouster_pkg_dir, 'launch', 'driver_launch.py')
+    ouster_pkg_dir = get_package_share_directory("ouster_ros")
+    ouster_launch_file = os.path.join(ouster_pkg_dir, 'launch', 'driver.launch.py')
     ouster3DLidar = [
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(ouster_launch_file)
@@ -94,11 +112,13 @@ def launch_setup(context, *args, **kwargs):
     
 
     actions=[PushRosNamespace(namespace)]
-    #actions.extend(ouster3DLidar)
+    #actions.extend(hunter_base)
+    #actions.extend(keyboard_control)
+    actions.extend(ouster3DLidar)
     #actions.extend(astraRGBDcamera)
-    actions.extend(usb_cam)
-    actions.extend(nmeaGPSnavsat)
-    actions.extend(rviz)
+    #actions.extend(usb_cam)
+    #actions.extend(nmeaGPSnavsat)
+    #actions.extend(rviz)
     return[
         GroupAction
         (
