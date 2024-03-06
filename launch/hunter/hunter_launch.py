@@ -29,7 +29,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Keyboard Controll (publish cmd_vel)
     keybaord_pkg_dir = get_package_share_directory("keyboard_control")
-    keyboard_launch_file = os.path.join(keybaord_pkg_dir, 'launch', 'keyboard_control.launch')
+    keyboard_launch_file = os.path.join(keybaord_pkg_dir, 'launch', 'keyboard_control_launch.py')
     keyboard_control = [
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(keyboard_launch_file)
