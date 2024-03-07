@@ -112,13 +112,13 @@ def launch_setup(context, *args, **kwargs):
     
 
     actions=[PushRosNamespace(namespace)]
-    #actions.extend(hunter_base)
-    #actions.extend(keyboard_control)
+    actions.extend(hunter_base)
+    actions.extend(keyboard_control)
     actions.extend(ouster3DLidar)
     #actions.extend(astraRGBDcamera)
     #actions.extend(usb_cam)
     #actions.extend(nmeaGPSnavsat)
-    #actions.extend(rviz)
+    actions.extend(rviz)
     return[
         GroupAction
         (
