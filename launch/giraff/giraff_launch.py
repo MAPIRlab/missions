@@ -160,7 +160,7 @@ def launch_setup(context, *args, **kwargs):
             name="minirae_lite",
             prefix="xterm -hold -e",
             parameters=[
-                {"port":"/dev/ttyUSB1"}
+                {"port":"/dev/ttyUSB0"}
             ]
         )
     ] 
@@ -172,7 +172,7 @@ def launch_setup(context, *args, **kwargs):
             name="windsonic",
             prefix="xterm -hold -e",
             parameters=[
-                {"port":"/dev/ttyUSB0"},
+                {"port":"/dev/ttyUSB1"},
                 {"frame_id":"giraff_base_link"}
             ]
         )
@@ -186,12 +186,12 @@ def launch_setup(context, *args, **kwargs):
     #actions.extend(reactive_robot2023)
     #actions.extend(start_async_slam_toolbox_node)
     
-    actions.extend(giraff_driver)
-    actions.extend(navigation_nodes)
-    actions.extend(hokuyo_node)
-    actions.extend(keyboard_control)
+    #actions.extend(giraff_driver)
+    #actions.extend(hokuyo_node)
     #actions.extend(PID)
     #actions.extend(anemometer)
+    actions.extend(navigation_nodes)
+    actions.extend(keyboard_control)
     return[
         GroupAction
         (
@@ -204,6 +204,7 @@ def generate_launch_description():
     return LaunchDescription([
         # Set env var to print messages to stdout immediately
         SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
+        SetEnvironmentVariable('RCUTILS_COLORIZED_OUTPUT', '1'),
         
         DeclareLaunchArgument(
             "log_level",
