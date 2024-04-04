@@ -1,0 +1,46 @@
+/*:
+  ros__parameters:
+    use_sim_time: false
+
+# PARAMETERS
+$(var namespace):
+  
+  mqtt_bridge:
+    ros__parameters:
+      host: "150.214.109.137"       # MQTT broker ip
+      port: 8002                    # MQTT broker TCP port
+      username: ""
+      password: ""
+      MQTT_namespace: "tdlas"        # main topic
+      MQTT_topics_subscribe: "tasks,NavToPose,/giraff/status,/reactive"  # subtopics to listen
+      append_timestamp: false
+
+  ptu_tracking:
+    ros__parameters:
+      tag_frame_id: tag36h11:0
+      camera_frame_id: camera
+      ptu_frame_id: wxxms/base_link
+      ptu_state_topic: /ptu/state
+      loopRate: 5.0
+
+  apriltags:
+    ros__parameters:
+      image_transport: raw    # image format
+      family: 36h11           # tag family name
+      size: 0.160             # tag edge size in meter
+      max_hamming: 0          # maximum allowed hamming distance (corrected bits)
+
+      # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
+      detector:
+        threads: 1          # number of threads
+        decimate: 2.0       # decimate resolution for quad detection
+        blur: 0.0           # sigma of Gaussian blur for quad detection
+        refine: True        # snap to strong gradients
+        sharpening: 0.25    # sharpening of decoded images
+        debug: False        # write additional debugging images to current working directory
+
+      # optional list of tags
+      #tag:
+      #  ids: [12]            # tag ID
+      #  frames: [tag_link]  # optional frame name
+      #  sizes: [0.173]   # optional tag-specific edge size
