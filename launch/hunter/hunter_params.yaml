@@ -9,7 +9,7 @@ $(var namespace):
   usb_cam_0:
     usb_cam:
       ros__parameters:
-        video_device: "/dev/video0"
+        video_device: "/dev/video4"
         framerate: 5.0
         io_method: "mmap"
         frame_id: "usb_cam_0"
@@ -37,12 +37,12 @@ $(var namespace):
         video_device: "/dev/video2"
         framerate: 5.0
         io_method: "mmap"
-        frame_id: "usb_cam_0"
+        frame_id: "usb_cam_1"
         pixel_format: "mjpeg2rgb" #"yuyv2rgb" #"mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
         av_device_format: "YUV422P"
         image_width: 1920 #1280
         image_height: 1080 #720
-        camera_name: "usb_cam_0"
+        camera_name: "usb_cam_1"
         camera_info_url: "package://usb_cam/config/camera_info.yaml"
         brightness: -1
         contrast: -1
