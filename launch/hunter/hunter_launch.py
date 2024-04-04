@@ -10,6 +10,7 @@ from launch_ros.actions import Node, PushRosNamespace
 from ament_index_python.packages import get_package_share_directory
 
 def launch_setup(context, *args, **kwargs):
+    
     # Get the launch directory
     pkg_dir = get_package_share_directory("missions_pkg")
     params_yaml_file = ParameterFile( os.path.join(pkg_dir, 'launch', 'hunter', 'hunter_params.yaml'), allow_substs=True)
