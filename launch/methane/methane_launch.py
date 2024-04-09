@@ -100,7 +100,7 @@ def launch_setup(context, *args, **kwargs):
                     package = "apriltag_ros",
                     plugin = "AprilTagNode",
                     name = "apriltag",
-                    namespace =  "apriltag",
+                    namespace = "apriltag",
                     parameters=[params_yaml_file],
                     remappings=[("/methane/apriltag/image_rect", "/methane/v4l2/image_rect"), ("/methane/apriltag/camera_info", "/methane/v4l2/camera_info")],
                     extra_arguments=[{'use_intra_process_comms': True}]
@@ -120,11 +120,13 @@ def launch_setup(context, *args, **kwargs):
             name='falcon_tdlas',
             output='screen',
             prefix="xterm -hold -e",
-            parameters=[
-                {"port" : "/dev/ttyUSB0"},
-                {"topic" : "/falcon/reading"}
-            ]
-            ),
+            parameters=[{
+                "port": "/dev/ttyUSB1",
+                "topic": "/falcon/reading",
+                "frequency": 10.0,
+                "verbose": True                
+            }]
+        ),
     ]
 
 
@@ -212,7 +214,7 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(robot_state_publisher)
     actions.extend(ptu_interbotix)
     actions.extend(apriltags)
-    #actions.extend(falcon_tdlas)
+    actions.extend(falcon_tdlas)
     actions.extend(ptu_tracking)
     #actions.extend(measurement_logger)
     actions.extend(rviz)
