@@ -15,33 +15,68 @@ $(var namespace):
       MQTT_topics_subscribe: "tasks,NavToPose,/giraff/status,/reactive"  # subtopics to listen
       append_timestamp: false
 
+  camera:
+    usb_cam:
+      ros__parameters:
+        video_device: "/dev/video0"
+        framerate: 30.0
+        io_method: "mmap"
+        frame_id: "camera"
+        pixel_format: "mjpeg2rgb" #"yuyv2rgb" #"mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
+        av_device_format: "YUV422P"
+        image_width: 1920 #1920
+        image_height: 1080 #1080
+        camera_name: "camera"
+        camera_info_url: "file:///home/mapir/.ros/camera_info/owlotech_camera.yaml"
+        brightness: -1
+        contrast: -1
+        saturation: -1
+        sharpness: -1
+        gain: -1
+        auto_white_balance: true
+        white_balance: 4000
+        autoexposure: true
+        exposure: 100
+        autofocus: false
+        focus: -1
+
+    rectify_node:
+      ros__parameters:
+        interpolation: 1
+        queue_size: 10
+
   ptu_tracking:
     ros__parameters:
+      tf_based_tracking: false
+      kp: 0.25    # for control
+      ki: 0.0     # for control
+      kd: 0.05    # for control
+      # For tf based tracking
       tag_frame_id: tag36h11:0
-      camera_frame_id: camera
       ptu_frame_id: wxxms/surface_link
-      ptu_state_topic: /ptu/state
-      loopRate: 5.0
+      # For image based tracking (tf_based_tracking: false)
+      tag_detection_topic: apriltag/detections
+      image_size_x: 1920
+      image_suze_y: 1080
 
-  apriltag:
-    apriltag:
-      ros__parameters:
-        #image_transport: raw    # image format
-        family: 36h11           # tag family name
-        size: 0.16              # tag edge size in meter
-        #max_hamming: 0          # maximum allowed hamming distance (corrected bits)
+  apriltag_node:    
+    ros__parameters:
+      #image_transport: raw    # image format
+      family: 36h11           # tag family name
+      size: 0.16              # tag edge size in meter
+      #max_hamming: 0          # maximum allowed hamming distance (corrected bits)
 
-        # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
-        #detector:
-        #  threads: 1          # number of threads
-        #  decimate: 2.0       # decimate resolution for quad detection
-        #  blur: 0.0           # sigma of Gaussian blur for quad detection
-        #  refine: 0           # snap to strong gradients
-        #  sharpening: 0.25    # sharpening of decoded images
-        #  debug: 0            # write additional debugging images to current working directory
+      # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
+      detector:
+        threads: 4          # number of threads
+      #  decimate: 2.0       # decimate resolution for quad detection
+      #  blur: 0.0           # sigma of Gaussian blur for quad detection
+      #  refine: 0           # snap to strong gradients
+      #  sharpening: 0.25    # sharpening of decoded images
+      #  debug: 0            # write additional debugging images to current working directory
 
-        # optional list of tags
-        #tag:
-        #  ids: [12]            # tag ID
-        #  frames: [tag_link]  # optional frame name
-        #  sizes: [0.173]   # optional tag-specific edge size
+      # optional list of tags
+      #tag:
+      #  ids: [12]            # tag ID
+      #  frames: [tag_link]  # optional frame name
+      #  sizes: [0.173]   # optional tag-specific edge size

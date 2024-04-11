@@ -74,17 +74,17 @@ def launch_setup(context, *args, **kwargs):
                     plugin = "v4l2_camera::V4L2Camera",
                     name = "v4l2_camera",
                     namespace = "v4l2",
-                    parameters = [{ 'video_device': '/dev/video2',
+                    parameters = [{ 'video_device': '/dev/video0',
                                     'camera_name': 'camera',
                                     'pixel_format': 'YUYV',
                                     'output_encoding': 'rgb8',
                                     'image_size': [1920, 1080],
                                     'camera_info_url': 'file:///home/mapir/.ros/camera_info/owlotech_camera.yaml',
-                                    'publish_rate': 30
+                                    'publish_rate': 30,
                                     }],
                     extra_arguments=[{'use_intra_process_comms': True}]
                 ),
-
+                
                 # Image Rect
                 ComposableNode(        
                     package = "image_proc",
@@ -207,6 +207,47 @@ def launch_setup(context, *args, **kwargs):
             ), 
     ]
 
+    # Camera alone
+    usb_cam = [
+        Node(
+            package='usb_cam',
+            executable='usb_cam_node_exe',
+            name='usb_cam',
+            namespace='camera',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            arguments=[],
+            remappings=[]    
+        ),
+
+        # Image Rect
+        Node(        
+            package = "image_proc",
+            executable = "rectify_node", 
+            name = "rectify_node",
+            namespace = "camera",
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            remappings=[
+                ("image", "image_raw"),
+                ("camera_info", "camera_info")
+            ],
+        ),
+
+        # Apriltags
+        Node(        
+            package = "apriltag_ros",
+            executable = "apriltag_node",
+            name = "apriltag_node",
+            namespace = "camera",
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            remappings=[("image_rect", "image_rect"), ("camera_info", "camera_info")],
+        ),
+    ]
 
     # SELECT COMPONENTS TO LAUNCH
     #=============================
@@ -214,10 +255,11 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(robot_state_publisher)
     actions.extend(ptu_interbotix)
     actions.extend(apriltags)
-    actions.extend(falcon_tdlas)
+    #actions.extend(falcon_tdlas)
     actions.extend(ptu_tracking)
     #actions.extend(measurement_logger)
     actions.extend(rviz)
+    #actions.extend(usb_cam)
     #actions.extend(mqtt)
     #actions.extend(status_publisher)
     
