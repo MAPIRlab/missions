@@ -55,7 +55,7 @@ def launch_setup(context, *args, **kwargs):
 
 
     # Camera and AprilTags
-    apriltags = [
+    compos_usbcam_apriltags = [
         # sudo apt install ros-humble-apriltag
         # sudo apt install ros-humble-apriltag-msgs
         # sudo apt install ros-humble-apriltag-ros
@@ -121,11 +121,24 @@ def launch_setup(context, *args, **kwargs):
             output='screen',
             prefix="xterm -hold -e",
             parameters=[{
-                "port": "/dev/ttyUSB1",
+                "port": "/dev/ttyUSB0",
                 "topic": "/falcon/reading",
                 "frequency": 10.0,
                 "verbose": True                
             }]
+        ),
+
+        # RQT plot
+        Node(
+            package='rqt_plot',
+            executable='rqt_plot',
+            name='falcon_plot',
+            output='screen',
+            prefix="xterm -hold -e",
+            arguments=[
+                #"/falcon/reading/average_ppmxm", "/falcon/reading/average_reflection_strength", "/falcon/reading/average_absorption_strength"
+                "/falcon/reading/average_ppmxm"
+            ],
         ),
     ]
 
@@ -254,8 +267,8 @@ def launch_setup(context, *args, **kwargs):
     actions=[PushRosNamespace(namespace)]
     actions.extend(robot_state_publisher)
     actions.extend(ptu_interbotix)
-    actions.extend(apriltags)
-    #actions.extend(falcon_tdlas)
+    actions.extend(compos_usbcam_apriltags)
+    actions.extend(falcon_tdlas)
     actions.extend(ptu_tracking)
     #actions.extend(measurement_logger)
     actions.extend(rviz)
