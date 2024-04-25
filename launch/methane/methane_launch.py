@@ -156,12 +156,15 @@ def launch_setup(context, *args, **kwargs):
     ]
     
     # GPS NMEA
-    nmea_gps_pkg_dir = get_package_share_directory("nmea_navsat_driver")
-    nmea_gps_launch_file = os.path.join(nmea_gps_pkg_dir, 'launch', 'nmea_serial_driver.launch.py')
     nmeaGPSnavsat = [
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(nmea_gps_launch_file)
-        ),
+        Node(
+            package='nmea_navsat_driver',
+            executable='nmea_serial_driver',
+            name='nmea_serial_driver',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+        )
     ]
 
     # Data Logger (for GDM with TDLAS)
