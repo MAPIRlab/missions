@@ -155,6 +155,14 @@ def launch_setup(context, *args, **kwargs):
             ),
     ]
     
+    # GPS NMEA
+    nmea_gps_pkg_dir = get_package_share_directory("nmea_navsat_driver")
+    nmea_gps_launch_file = os.path.join(nmea_gps_pkg_dir, 'launch', 'nmea_serial_driver.launch.py')
+    nmeaGPSnavsat = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(nmea_gps_launch_file)
+        ),
+    ]
 
     # Data Logger (for GDM with TDLAS)
     measurement_logger = [
@@ -270,6 +278,7 @@ def launch_setup(context, *args, **kwargs):
     actions.extend(compos_usbcam_apriltags)
     actions.extend(falcon_tdlas)
     actions.extend(ptu_tracking)
+    actions.extend(nmeaGPSnavsat)
     #actions.extend(measurement_logger)
     actions.extend(rviz)
     #actions.extend(usb_cam)
