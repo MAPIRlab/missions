@@ -5,13 +5,35 @@
 # PARAMETERS
 $(var namespace):
   
-  nmea_serial_driver:
+  deluo:
+    nmea_serial_driver:
+      ros__parameters:
+        port: "/dev/ttyUSB0"
+        baud: 4800
+        frame_id: "deluo_gps"
+        time_ref_source: "gps_frame"
+        useRMC: False
+
+  fakeGPSpub:
     ros__parameters:
-      port: "/dev/ttyUSB2"
-      baud: 4800
-      frame_id: "gps_frame"
-      time_ref_source: "gps_frame"
-      useRMC: False
+      gps_topic_pub: "fake_gps/fix"
+      gps_frame_id: "fake_gps"
+      gps_latitude: 36.715845
+      gps_longitude: -4.478308
+      gps_altitude: 0.0
+
+
+  gps2cartesian:
+    ros__parameters:
+      ignore_altitude: true
+      use_cartesian_UTM: true
+      gps1_topic: "/methane/deluo/fix"
+      gps2_topic: "/methane/fake_gps/fix"
+      set_map_frame_latlong_manually: true
+      map_latitude: 36.715839
+      map_longitude: -4.478426
+      map_altitude: 0.0
+  
 
   camera:
     usb_cam:
@@ -37,44 +59,18 @@ $(var namespace):
         exposure: 100
         autofocus: false
         focus: -1
-
-    rectify_node:
-      ros__parameters:
-        interpolation: 1
-        queue_size: 10
+  
 
   ptu_tracking:
     ros__parameters:
       tf_based_tracking: false
-      kp: 0.25    # for control
+      kp: 0.05    # for control
       ki: 0.0     # for control
       kd: 0.0    # for control
       # For tf based tracking
       tag_frame_id: tag36h11:0
       ptu_frame_id: wxxms/surface_link
       # For image based tracking (tf_based_tracking: false)
-      tag_detection_topic: apriltag/detections
+      tag_detection_topic: aruco/detections
       image_size_x: 1920
       image_suze_y: 1080
-
-  apriltag_node:    
-    ros__parameters:
-      #image_transport: raw    # image format
-      family: 36h11           # tag family name
-      size: 0.16              # tag edge size in meter
-      #max_hamming: 0          # maximum allowed hamming distance (corrected bits)
-
-      # see "apriltag.h" 'struct apriltag_detector' for more documentation on these optional parameters
-      detector:
-        threads: 4          # number of threads
-      #  decimate: 2.0       # decimate resolution for quad detection
-      #  blur: 0.0           # sigma of Gaussian blur for quad detection
-      #  refine: 0           # snap to strong gradients
-      #  sharpening: 0.25    # sharpening of decoded images
-      #  debug: 0            # write additional debugging images to current working directory
-
-      # optional list of tags
-      #tag:
-      #  ids: [12]            # tag ID
-      #  frames: [tag_link]  # optional frame name
-      #  sizes: [0.173]   # optional tag-specific edge size

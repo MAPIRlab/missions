@@ -51,65 +51,7 @@ def launch_setup(context, *args, **kwargs):
                 'load_configs': False
             }],
             ),
-    ]
-
-
-    # Camera and AprilTags
-    compos_usbcam_apriltags = [
-        # sudo apt install ros-humble-apriltag
-        # sudo apt install ros-humble-apriltag-msgs
-        # sudo apt install ros-humble-apriltag-ros
-        #===========
-        # CONTAINER
-        #===========
-        ComposableNodeContainer(        
-            package = "rclcpp_components",
-            executable = "component_container",
-            name = "tag_container",
-            namespace = "",
-            composable_node_descriptions=[
-                # v4l2_camera
-                ComposableNode(        
-                    package = "v4l2_camera",
-                    plugin = "v4l2_camera::V4L2Camera",
-                    name = "v4l2_camera",
-                    namespace = "v4l2",
-                    parameters = [{ 'video_device': '/dev/video0',
-                                    'camera_name': 'camera',
-                                    'pixel_format': 'YUYV',
-                                    'output_encoding': 'rgb8',
-                                    'image_size': [1920, 1080],
-                                    'camera_info_url': 'file:///home/mapir/.ros/camera_info/owlotech_camera.yaml',
-                                    'publish_rate': 30,
-                                    }],
-                    extra_arguments=[{'use_intra_process_comms': True}]
-                ),
-                
-                # Image Rect
-                ComposableNode(        
-                    package = "image_proc",
-                    plugin = "image_proc::RectifyNode", 
-                    name = "rectify",
-                    namespace = "v4l2",        
-                    remappings=[("image", "image_raw"), ("camera_info", "camera_info")],
-                    extra_arguments=[{'use_intra_process_comms': True}]
-                ),
-                
-                # AprilTags comes as a component
-                ComposableNode(        
-                    package = "apriltag_ros",
-                    plugin = "AprilTagNode",
-                    name = "apriltag",
-                    namespace = "apriltag",
-                    parameters=[params_yaml_file],
-                    remappings=[("/methane/apriltag/image_rect", "/methane/v4l2/image_rect"), ("/methane/apriltag/camera_info", "/methane/v4l2/camera_info")],
-                    extra_arguments=[{'use_intra_process_comms': True}]
-                ),
-            ],
-            output = "both",
-            prefix = "xterm -hold -e"
-        ),
-    ]    
+    ]   
 
 
     # FALCON Methane Detector
@@ -142,8 +84,49 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
+    # RGB Camera
+    usb_cam = [
+        Node(
+            package='usb_cam',
+            executable='usb_cam_node_exe',
+            name='usb_cam',
+            namespace='camera',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+            arguments=[],
+            remappings=[]    
+        ),
+    ]
 
-    # Track AprilTags with PTU
+    # GPS DELUO NMEA
+    GPSdriver = [
+        Node(
+            package='nmea_navsat_driver',
+            executable='nmea_serial_driver',
+            name='nmea_serial_driver',
+            namespace= "deluo",
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file],
+        )
+    ]
+
+    # Find Aruco
+    aruco= [
+        Node(
+            package="aruco",
+            executable="findAruco",
+            prefix="xterm -hold -e",
+            parameters=[
+                {"markerLength": 0.3},
+                {"imageTopic":"camera/image_raw"},
+                {"cameraInfoTopic":"camera/camera_info"},
+            ],
+        )
+    ]
+
+    # Track Aruco with PTU
     ptu_tracking = [
         Node(
             package='ptu_tracking',
@@ -155,17 +138,7 @@ def launch_setup(context, *args, **kwargs):
             ),
     ]
     
-    # GPS NMEA
-    nmeaGPSnavsat = [
-        Node(
-            package='nmea_navsat_driver',
-            executable='nmea_serial_driver',
-            name='nmea_serial_driver',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[params_yaml_file],
-        )
-    ]
+    
 
     # Data Logger (for GDM with TDLAS)
     measurement_logger = [
@@ -181,6 +154,26 @@ def launch_setup(context, *args, **kwargs):
         )
     ]
 
+    #gps2cartesian
+    gps2cartesian = [
+        Node(
+            package='gps2cartesian',
+            executable='gps2cartesian',
+            name='gps2cartesian',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file]
+        ),
+
+        Node(
+            package='gps2cartesian',
+            executable='fakeGPSpub',
+            name='fakeGPSpub',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[params_yaml_file]
+        )
+    ]
 
     # RVIZ
     rviz_file = os.path.join(pkg_dir, 'rviz', 'tdlas.rviz')
@@ -196,97 +189,23 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
-
-    # MQTT_bridge
-    mqtt = [
-        Node(
-            package='mqtt_bridge',
-            executable='mqtt_bridge_node',
-            name='mqtt_bridge',
-            output='screen',
-            prefix='xterm -hold -e',
-            parameters=[params_yaml_file]            
-            ),
-        
-        Node(
-            package='nav2_over_mqtt',
-            executable='mqtt2Nav2',
-            name='mqtt2Nav2',
-            output='screen',
-            prefix='xterm -hold -e',
-            parameters=[params_yaml_file]            
-            ),
-    ]       
-
-
-    # Status Publisher (for MQTT)
-    status_publisher= [
-        Node(
-            package='robot_status_publisher',
-            executable='robot_status_publisher_node',
-            name='status_publisher',
-            output='screen',
-            prefix='xterm -hold -e',
-            parameters=[params_yaml_file]
-            ), 
-    ]
-
-    # Camera alone
-    usb_cam = [
-        Node(
-            package='usb_cam',
-            executable='usb_cam_node_exe',
-            name='usb_cam',
-            namespace='camera',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[params_yaml_file],
-            arguments=[],
-            remappings=[]    
-        ),
-
-        # Image Rect
-        Node(        
-            package = "image_proc",
-            executable = "rectify_node", 
-            name = "rectify_node",
-            namespace = "camera",
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[params_yaml_file],
-            remappings=[
-                ("image", "image_raw"),
-                ("camera_info", "camera_info")
-            ],
-        ),
-
-        # Apriltags
-        Node(        
-            package = "apriltag_ros",
-            executable = "apriltag_node",
-            name = "apriltag_node",
-            namespace = "camera",
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[params_yaml_file],
-            remappings=[("image_rect", "image_rect"), ("camera_info", "camera_info")],
-        ),
-    ]
-
+   
     # SELECT COMPONENTS TO LAUNCH
     #=============================
     actions=[PushRosNamespace(namespace)]
-    actions.extend(robot_state_publisher)
-    actions.extend(ptu_interbotix)
-    actions.extend(compos_usbcam_apriltags)
-    actions.extend(falcon_tdlas)
-    actions.extend(ptu_tracking)
-    actions.extend(nmeaGPSnavsat)
+    # HW
+    #actions.extend(robot_state_publisher)
+    #actions.extend(ptu_interbotix)
+    #actions.extend(usb_cam)
+    #actions.extend(falcon_tdlas)
+    #actions.extend(GPSdriver)
+    # SW
+    #actions.extend(aruco)
+    #actions.extend(ptu_tracking)
+    actions.extend(gps2cartesian)
     #actions.extend(measurement_logger)
     actions.extend(rviz)
-    #actions.extend(usb_cam)
-    #actions.extend(mqtt)
-    #actions.extend(status_publisher)
+    
     
     return[
         GroupAction
