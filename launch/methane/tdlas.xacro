@@ -48,9 +48,17 @@
 
   # PTU WXXMS Interbotix
   <xacro:include filename="$(find interbotix_xsturret_descriptions)/urdf/wxxms.urdf.xacro" />
-    
+  
+  # Create a fixed joint to connect the BASE to the GPS
+  <link name="gps_tdlas"/>
+  <joint name="gps_to_base_joint" type="fixed">
+    <parent link="gps_tdlas"/>
+    <child link="$(arg frame_ns)_base_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
   # Create a fixed joint to connect the PTU to the base
-  <joint name="base_to_ptu_base" type="fixed">
+  <joint name="base_to_ptu_joint" type="fixed">
     <parent link="$(arg frame_ns)_base_link"/>
     <child link="wxxms/base_link"/>
     <origin xyz="0.0 0.0 1.0" rpy="0 0 0"/>
