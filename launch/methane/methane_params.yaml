@@ -14,21 +14,28 @@ $(var namespace):
         time_ref_source: "gps_frame"
         useRMC: False
 
-  fakeGPSpub:
+  fakeGPS_tdlas:
     ros__parameters:
-      gps_topic_pub: "fake_gps/fix"
-      gps_frame_id: "fake_gps"
+      gps_topic_pub: "gps_tdlas/fix"
+      gps_frame_id: "gps_tdlas"
       gps_latitude: 36.715845
       gps_longitude: -4.478308
       gps_altitude: 0.0
 
+  fakeGPS_hunter:
+    ros__parameters:
+      gps_topic_pub: "gps_hunter/fix"
+      gps_frame_id: "gps_hunter"
+      gps_latitude: 36.7159
+      gps_longitude: -4.478308
+      gps_altitude: 0.0
 
   gps2cartesian:
     ros__parameters:
       ignore_altitude: true
       use_cartesian_UTM: true
-      gps1_topic: "/methane/deluo/fix"
-      gps2_topic: "/methane/fake_gps/fix"
+      gps1_topic: "/methane/gps_hunter/fix"
+      gps2_topic: "/methane/gps_tdlas/fix"
       set_map_frame_latlong_manually: true
       map_latitude: 36.715839
       map_longitude: -4.478426
