@@ -55,3 +55,33 @@ $(var namespace):
         exposure: 100
         autofocus: false
         focus: -1
+
+  mqtt_bridge:
+    ros__parameters:
+      host: "150.214.109.137"       # MQTT broker ip
+      port: 8002                    # MQTT broker TCP port
+      username: ""
+      password: ""
+      MQTT_namespace: "hunter"        # main topic
+      MQTT_topics_subscribe: "ninguno"  # subtopics to listen
+      append_timestamp: false
+  
+  navsat_sender:
+    ros__parameters:
+      topic: "/hunter/fake_fix"   # topic with the GPS data to tx
+  
+  nmea_serial_driver:
+    ros__parameters:
+      port: "/dev/ttyUSB0"
+      baud: 4800
+      frame_id: "gps_hunter"
+      time_ref_source: "gps_frame"
+      useRMC: False
+
+  fakeGPS_hunter:
+    ros__parameters:
+      gps_topic_pub: "fake_fix"
+      gps_frame_id: "gps_hunter"
+      gps_latitude: 36.71511721
+      gps_longitude: -4.4784347
+      gps_altitude: 0.0
