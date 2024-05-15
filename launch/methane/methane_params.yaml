@@ -51,7 +51,7 @@ $(var namespace):
     ros__parameters:
       ignore_altitude: true
       use_cartesian_UTM: true
-      gps1_topic: "/methane/gps_hunter/fix"
+      gps1_topic: "/hunter/fake_fix"
       gps2_topic: "/methane/gps_tdlas/fix"
       set_map_frame_latlong_manually: true
       map_latitude: 36.715839
@@ -81,13 +81,9 @@ $(var namespace):
       username: ""
       password: ""
       MQTT_namespace: "methane"        # main topic
-      MQTT_topics_subscribe: "gps_tdlas/fix"  # subtopics to listen
+      MQTT_topics_subscribe: "/hunter/fake_fix"  # subtopics to listen
       append_timestamp: false
 
   navsat_receiver:
     ros__parameters:
-      topic: "hunter/fix"   # topic to publish incomming msgs
-  
-  navsat_sender:
-    ros__parameters:
-      topic: "gps_tdlas/fix"   # topic with the GPS data to tx
+      topic: "/hunter/fake_fix"   # topic to publish incomming msgs
