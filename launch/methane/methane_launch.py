@@ -134,7 +134,7 @@ def launch_setup(context, *args, **kwargs):
             executable="findAruco",
             prefix="xterm -hold -e",
             parameters=[
-                {"markerLength": 0.3},
+                {"markerLength": 0.18},
                 {"imageTopic":"camera/image_raw"},
                 {"cameraInfoTopic":"camera/camera_info"},
             ],
@@ -175,25 +175,14 @@ def launch_setup(context, *args, **kwargs):
             parameters=[params_yaml_file]            
         ),
 
-        #Node(
-        #    package='navsat_mqtt',
-        #    executable='receiver',
-        #    name='navsat_receiver',
-        #    output='screen',
-        #    prefix='xterm -hold -e',
-        #    parameters=[params_yaml_file]            
-        #),
-
-        # TEST
         Node(
             package='navsat_mqtt',
-            executable='sender',
-            name='navsat_sender',
+            executable='receiver',
+            name='navsat_receiver',
             output='screen',
             prefix='xterm -hold -e',
             parameters=[params_yaml_file]            
-        ),
-        
+        )
     ]
 
     # RVIZ
@@ -229,17 +218,17 @@ def launch_setup(context, *args, **kwargs):
     actions=[PushRosNamespace(namespace)]
     # HW
     actions.extend(robot_state_publisher)
-   # actions.extend(ptu_interbotix)
-   # actions.extend(usb_cam)
-   # actions.extend(falcon_tdlas)
+    actions.extend(ptu_interbotix)
+    actions.extend(usb_cam)
+    actions.extend(falcon_tdlas)
     actions.extend(GPSdriver)
     # SW
-    #actions.extend(aruco)
-    #actions.extend(ptu_tracking)
-    #actions.extend(gps2cartesian)
+    actions.extend(aruco)
+    actions.extend(ptu_tracking)
+    actions.extend(gps2cartesian)
     actions.extend(mqtt)
     #actions.extend(measurement_logger)
-    #actions.extend(rviz)
+    actions.extend(rviz)
     
     
     return[
