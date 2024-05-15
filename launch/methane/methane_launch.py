@@ -134,7 +134,7 @@ def launch_setup(context, *args, **kwargs):
             executable="findAruco",
             prefix="xterm -hold -e",
             parameters=[
-                {"markerLength": 0.3},
+                {"markerLength": 0.18},
                 {"imageTopic":"camera/image_raw"},
                 {"cameraInfoTopic":"camera/camera_info"},
             ],
@@ -218,13 +218,13 @@ def launch_setup(context, *args, **kwargs):
     actions=[PushRosNamespace(namespace)]
     # HW
     actions.extend(robot_state_publisher)
-   # actions.extend(ptu_interbotix)
-   # actions.extend(usb_cam)
-   # actions.extend(falcon_tdlas)
+    actions.extend(ptu_interbotix)
+    actions.extend(usb_cam)
+    actions.extend(falcon_tdlas)
     actions.extend(GPSdriver)
     # SW
-    #actions.extend(aruco)
-    #actions.extend(ptu_tracking)
+    actions.extend(aruco)
+    actions.extend(ptu_tracking)
     actions.extend(gps2cartesian)
     actions.extend(mqtt)
     #actions.extend(measurement_logger)

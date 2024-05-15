@@ -18,8 +18,8 @@ $(var namespace):
     ros__parameters:
       gps_topic_pub: "gps_tdlas/fix"
       gps_frame_id: "gps_tdlas"
-      gps_latitude: 36.715845
-      gps_longitude: -4.478308
+      gps_latitude: 36.7151721
+      gps_longitude: -4.4784347
       gps_altitude: 0.0
 
   camera:
@@ -81,7 +81,7 @@ $(var namespace):
       username: ""
       password: ""
       MQTT_namespace: "methane"        # main topic
-      MQTT_topics_subscribe: "/hunter/fake_fix"  # subtopics to listen
+      MQTT_topics_subscribe: "/hunter/fix,/hunter/fake_fix"  # subtopics to listen
       append_timestamp: false
 
   navsat_receiver:
