@@ -31,7 +31,6 @@
   
 
   # Base
-  
   <link name="$(arg frame_ns)_base_link">
     <visual>
       <geometry>
@@ -72,5 +71,5 @@
     <!-- <origin xyz="0.07 0 0.0" rpy="-1.57079 0 -1.57079"/> -->
     <origin xyz="0.0 0.092 0.05" rpy="-1.57079 -1.57079 -1.57079"/>
   </joint>
-  
+ 
 </robot>

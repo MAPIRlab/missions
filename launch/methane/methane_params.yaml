@@ -22,30 +22,10 @@ $(var namespace):
       gps_longitude: -4.478308
       gps_altitude: 0.0
 
-  fakeGPS_hunter:
-    ros__parameters:
-      gps_topic_pub: "gps_hunter/fix"
-      gps_frame_id: "gps_hunter"
-      gps_latitude: 36.7159
-      gps_longitude: -4.478308
-      gps_altitude: 0.0
-
-  gps2cartesian:
-    ros__parameters:
-      ignore_altitude: true
-      use_cartesian_UTM: true
-      gps1_topic: "/methane/gps_hunter/fix"
-      gps2_topic: "/methane/gps_tdlas/fix"
-      set_map_frame_latlong_manually: true
-      map_latitude: 36.715839
-      map_longitude: -4.478426
-      map_altitude: 0.0
-  
-
   camera:
     usb_cam:
       ros__parameters:
-        video_device: "/dev/video0"
+        video_device: "/dev/video2"
         framerate: 30.0
         io_method: "mmap"
         frame_id: "camera"
@@ -66,14 +46,24 @@ $(var namespace):
         exposure: 100
         autofocus: false
         focus: -1
-  
 
+  gps2cartesian:
+    ros__parameters:
+      ignore_altitude: true
+      use_cartesian_UTM: true
+      gps1_topic: "/methane/gps_hunter/fix"
+      gps2_topic: "/methane/gps_tdlas/fix"
+      set_map_frame_latlong_manually: true
+      map_latitude: 36.715839
+      map_longitude: -4.478426
+      map_altitude: 0.0
+  
   ptu_tracking:
     ros__parameters:
       tf_based_tracking: false
       kp: 0.05    # for control
       ki: 0.0     # for control
-      kd: 0.0    # for control
+      kd: 0.002    # for control
       # For tf based tracking
       tag_frame_id: tag36h11:0
       ptu_frame_id: wxxms/surface_link
@@ -81,3 +71,23 @@ $(var namespace):
       tag_detection_topic: aruco/detections
       image_size_x: 1920
       image_suze_y: 1080
+      goal_marker_x: 950
+      goal_marker_y: 560
+  
+  mqtt_bridge:
+    ros__parameters:
+      host: "150.214.109.137"       # MQTT broker ip
+      port: 8002                    # MQTT broker TCP port
+      username: ""
+      password: ""
+      MQTT_namespace: "methane"        # main topic
+      MQTT_topics_subscribe: "gps_tdlas/fix"  # subtopics to listen
+      append_timestamp: false
+
+  navsat_receiver:
+    ros__parameters:
+      topic: "hunter/fix"   # topic to publish incomming msgs
+  
+  navsat_sender:
+    ros__parameters:
+      topic: "gps_tdlas/fix"   # topic with the GPS data to tx

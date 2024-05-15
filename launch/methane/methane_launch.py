@@ -21,6 +21,10 @@ def launch_setup(context, *args, **kwargs):
     # set Namespace
     namespace = LaunchConfiguration('namespace').perform(context)
     
+    #===========================
+    #         HW
+    #===========================
+
     # URDF model (TFs)
     setup_desc = xacro.process_file(os.path.join(pkg_dir, 'launch', 'methane', 'tdlas.xacro'), mappings={'frame_ns': namespace})
     setup_desc = setup_desc.toprettyxml(indent='  ')
@@ -32,8 +36,7 @@ def launch_setup(context, *args, **kwargs):
             output='screen',
             parameters=[{'robot_description': setup_desc}],
         )
-    ]
-    
+    ]    
         
     # PTU Interbotix (USB0)
     interbotix_xsturret_control_path = get_package_share_directory("interbotix_xsturret_control")
@@ -51,8 +54,7 @@ def launch_setup(context, *args, **kwargs):
                 'load_configs': False
             }],
             ),
-    ]   
-
+    ]
 
     # FALCON Methane Detector (USB1)
     falcon_tdlas = [
@@ -99,7 +101,6 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
-
     # GPS DELUO NMEA (USB3)
     GPSdriver = [
         Node(
@@ -109,16 +110,7 @@ def launch_setup(context, *args, **kwargs):
             output='screen',
             prefix="xterm -hold -e",
             parameters=[params_yaml_file]
-        ),
-
-         Node(
-            package='gps2cartesian',
-            executable='fakeGPSpub',
-            name='fakeGPS_hunter',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[params_yaml_file]
-        ),
+        ),        
 
         #Node(
         #    package='nmea_navsat_driver',
@@ -130,6 +122,10 @@ def launch_setup(context, *args, **kwargs):
         #    parameters=[params_yaml_file],
         #)
     ]
+
+    #===========================
+    #         SW
+    #===========================
 
     # Find Aruco
     aruco= [
@@ -157,23 +153,7 @@ def launch_setup(context, *args, **kwargs):
             ),
     ]
     
-    
-
-    # Data Logger (for GDM with TDLAS)
-    measurement_logger = [
-        Node(
-            package='robot2023',
-            executable='log_measurements',
-            name='log_measurements',
-            output='screen',
-            prefix="xterm -hold -e",
-            parameters=[
-                {"file_path" : "/home/mapir/mapir_ws/measurement_log1"},
-            ]
-        )
-    ]
-
-    #gps2cartesian
+    # Transform LatLong to XYZ coordinates
     gps2cartesian = [
         Node(
             package='gps2cartesian',
@@ -183,6 +163,37 @@ def launch_setup(context, *args, **kwargs):
             prefix="xterm -hold -e",
             parameters=[params_yaml_file]
         )        
+    ]
+
+    mqtt = [
+        Node(
+            package='mqtt_bridge',
+            executable='mqtt_bridge_node',
+            name='mqtt_bridge',
+            output='screen',
+            prefix='xterm -hold -e',
+            parameters=[params_yaml_file]            
+        ),
+
+        #Node(
+        #    package='navsat_mqtt',
+        #    executable='receiver',
+        #    name='navsat_receiver',
+        #    output='screen',
+        #    prefix='xterm -hold -e',
+        #    parameters=[params_yaml_file]            
+        #),
+
+        # TEST
+        Node(
+            package='navsat_mqtt',
+            executable='sender',
+            name='navsat_sender',
+            output='screen',
+            prefix='xterm -hold -e',
+            parameters=[params_yaml_file]            
+        ),
+        
     ]
 
     # RVIZ
@@ -199,22 +210,36 @@ def launch_setup(context, *args, **kwargs):
         ),
     ]
 
+    # Data Logger (for GDM with TDLAS)
+    measurement_logger = [
+        Node(
+            package='robot2023',
+            executable='log_measurements',
+            name='log_measurements',
+            output='screen',
+            prefix="xterm -hold -e",
+            parameters=[
+                {"file_path" : "/home/mapir/mapir_ws/measurement_log1"},
+            ]
+        )
+    ]
    
     # SELECT COMPONENTS TO LAUNCH
     #=============================
     actions=[PushRosNamespace(namespace)]
     # HW
     actions.extend(robot_state_publisher)
-    actions.extend(ptu_interbotix)
-    actions.extend(usb_cam)
-    actions.extend(falcon_tdlas)
+   # actions.extend(ptu_interbotix)
+   # actions.extend(usb_cam)
+   # actions.extend(falcon_tdlas)
     actions.extend(GPSdriver)
     # SW
-    actions.extend(aruco)
-    actions.extend(ptu_tracking)
-    actions.extend(gps2cartesian)
+    #actions.extend(aruco)
+    #actions.extend(ptu_tracking)
+    #actions.extend(gps2cartesian)
+    actions.extend(mqtt)
     #actions.extend(measurement_logger)
-    actions.extend(rviz)
+    #actions.extend(rviz)
     
     
     return[
