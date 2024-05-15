@@ -1,0 +1,93 @@
+/*:
+  ros__parameters:
+    use_sim_time: false
+
+# PARAMETERS
+$(var namespace):
+  
+  deluo:
+    nmea_serial_driver:
+      ros__parameters:
+        port: "/dev/ttyUSB0"
+        baud: 4800
+        frame_id: "deluo_gps"
+        time_ref_source: "gps_frame"
+        useRMC: False
+
+  fakeGPS_tdlas:
+    ros__parameters:
+      gps_topic_pub: "gps_tdlas/fix"
+      gps_frame_id: "gps_tdlas"
+      gps_latitude: 36.715845
+      gps_longitude: -4.478308
+      gps_altitude: 0.0
+
+  camera:
+    usb_cam:
+      ros__parameters:
+        video_device: "/dev/video2"
+        framerate: 30.0
+        io_method: "mmap"
+        frame_id: "camera"
+        pixel_format: "mjpeg2rgb" #"yuyv2rgb" #"mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
+        av_device_format: "YUV422P"
+        image_width: 1920 #1920
+        image_height: 1080 #1080
+        camera_name: "camera"
+        camera_info_url: "file:///home/mapir/.ros/camera_info/owlotech_camera.yaml"
+        brightness: -1
+        contrast: -1
+        saturation: -1
+        sharpness: -1
+        gain: -1
+        auto_white_balance: true
+        white_balance: 4000
+        autoexposure: true
+        exposure: 100
+        autofocus: false
+        focus: -1
+
+  gps2cartesian:
+    ros__parameters:
+      ignore_altitude: true
+      use_cartesian_UTM: true
+      gps1_topic: "/methane/gps_hunter/fix"
+      gps2_topic: "/methane/gps_tdlas/fix"
+      set_map_frame_latlong_manually: true
+      map_latitude: 36.715839
+      map_longitude: -4.478426
+      map_altitude: 0.0
+  
+  ptu_tracking:
+    ros__parameters:
+      tf_based_tracking: false
+      kp: 0.05    # for control
+      ki: 0.0     # for control
+      kd: 0.002    # for control
+      # For tf based tracking
+      tag_frame_id: tag36h11:0
+      ptu_frame_id: wxxms/surface_link
+      # For image based tracking (tf_based_tracking: false)
+      tag_detection_topic: aruco/detections
+      image_size_x: 1920
+      image_suze_y: 1080
+      goal_marker_x: 950
+      goal_marker_y: 560
+  
+  mqtt_bridge:
+    ros__parameters:
+      host: "150.214.109.137"       # MQTT broker ip
+      port: 8002                    # MQTT broker TCP port
+      username: ""
+      password: ""
+      MQTT_namespace: "methane"        # main topic
+      MQTT_topics_subscribe: "gps_tdlas/fix"  # subtopics to listen
+      append_timestamp: false
+
+  navsat_receiver:
+    ros__parameters:
+      topic: "hunter/fix"   # topic to publish incomming msgs
+  
+  navsat_sender:
+    ros__parameters:
+      topic: "gps_tdlas/fix"   # topic with the GPS data to tx
