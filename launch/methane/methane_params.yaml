@@ -18,14 +18,14 @@ $(var namespace):
     ros__parameters:
       gps_topic_pub: "gps_tdlas/fix"
       gps_frame_id: "gps_tdlas"
-      gps_latitude: 36.7151721
-      gps_longitude: -4.4784347
+      gps_latitude: 36.7157676 # punto 1: 36.7157676,-4.4784126
+      gps_longitude: -4.4784126 # punto 2: 36.7157676,-4.4784126
       gps_altitude: 0.0
 
   camera:
     usb_cam:
       ros__parameters:
-        video_device: "/dev/video2"
+        video_device: "/dev/video0"
         framerate: 30.0
         io_method: "mmap"
         frame_id: "camera"
@@ -61,9 +61,9 @@ $(var namespace):
   ptu_tracking:
     ros__parameters:
       tf_based_tracking: false
-      kp: 0.05    # for control
+      kp: 0.04    # for control
       ki: 0.0     # for control
-      kd: 0.002    # for control
+      kd: 0.0    # for control
       # For tf based tracking
       tag_frame_id: tag36h11:0
       ptu_frame_id: wxxms/surface_link
