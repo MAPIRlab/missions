@@ -8,4 +8,4 @@
 #ros2 bag record --max-bag-size 1000000000 --regex "(.*)(color)(.*)camera_info|tf|tf_static|(-*)fix|(-*)vel|(.*)heading|(.*)imu|(.*)range_image|(.*)intensity_image|ambient_image|(.*)(color)(.*)image_raw"
 
 # Methane
-ros2 bag record --max-bag-size 1000000000 --regex "tf|tf_static|(-*)fix|(-*)reading"
+ros2 bag record --max-bag-size 1000000000 --regex "tf|tf_static|(-*)fix|(-*)reading|(-*)detections"
