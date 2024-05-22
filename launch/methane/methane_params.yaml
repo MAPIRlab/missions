@@ -18,8 +18,9 @@ $(var namespace):
     ros__parameters:
       gps_topic_pub: "gps_tdlas/fix"
       gps_frame_id: "gps_tdlas"
-      gps_latitude: 36.7157676 # punto 1: 36.7157676,-4.4784126
-      gps_longitude: -4.4784126 # punto 2: 36.7157676,-4.4784126
+      gps_latitude: 36.715897485 # punto 1: 36.715911,-4.4795547  RTK: 36.7159195233333, -4.47891364833333
+      gps_longitude: -4.47879087166667 # punto 2: latitude: 36.715897485 longitude: -4.47879087166667
+
       gps_altitude: 0.0
 
   camera:
@@ -51,19 +52,28 @@ $(var namespace):
     ros__parameters:
       ignore_altitude: true
       use_cartesian_UTM: true
-      gps1_topic: "/hunter/fake_fix"
+      gps1_topic: "/hunter/fix"
       gps2_topic: "/methane/gps_tdlas/fix"
       set_map_frame_latlong_manually: true
-      map_latitude: 36.715839
-      map_longitude: -4.478426
+      map_latitude: 36.7159195233333
+      map_longitude: -4.47891364833333
       map_altitude: 0.0
   
   ptu_tracking:
     ros__parameters:
       tf_based_tracking: false
-      kp: 0.04    # for control
-      ki: 0.0     # for control
-      kd: 0.0    # for control
+      # PID pan
+      #ku =0.8 T=2.2
+      kp_p: 0.1  # for control
+      ki_p: 0.3  
+      kd_p: 0.15     
+      window_size_p: 3
+
+      # PID tilt
+      kp_t: 0.1    # for control
+      ki_t: 0.1    
+      kd_t: 0.1    
+      window_size_t: 3
       # For tf based tracking
       tag_frame_id: tag36h11:0
       ptu_frame_id: wxxms/surface_link
@@ -71,7 +81,7 @@ $(var namespace):
       tag_detection_topic: aruco/detections
       image_size_x: 1920
       image_suze_y: 1080
-      goal_marker_x: 950
+      goal_marker_x: 975
       goal_marker_y: 560
   
   mqtt_bridge:
@@ -81,9 +91,9 @@ $(var namespace):
       username: ""
       password: ""
       MQTT_namespace: "methane"        # main topic
-      MQTT_topics_subscribe: "/hunter/fix,/hunter/fake_fix"  # subtopics to listen
+      MQTT_topics_subscribe: "/hunter/fix"  # subtopics to listen
       append_timestamp: false
 
   navsat_receiver:
     ros__parameters:
-      topic: "/hunter/fake_fix"   # topic to publish incomming msgs
+      topic: "/hunter/fix"   # topic to publish incomming msgs
