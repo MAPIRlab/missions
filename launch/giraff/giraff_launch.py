@@ -21,6 +21,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.parameter_descriptions import ParameterFile
 from ament_index_python.packages import get_package_share_directory
+from ros2launch.api import get_share_file_path_from_package
 
 def launch_setup(context, *args, **kwargs):
     # Get the launch directory
@@ -178,18 +179,55 @@ def launch_setup(context, *args, **kwargs):
         )
     ] 
 
+    astra_camera = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                get_share_file_path_from_package(package_name="astra_camera", file_name="astra.launch.py")
+            )
+        ),
+        Node(
+             package='tf_publisher_gui',
+             executable='gui_pub',
+             parameters = [
+                 {'renderGUI' : False},
+                 {'freq' : 1.0},
+
+                 {'x' : -0.16},
+                 {'y' : -0.06},
+                 {'z' : 0.90},
+
+                 {'roll' : -0.03},
+                 {'pitch' : -0.15},
+                 {'yaw' : 0.08},
+
+                 {'parent_frame' : "giraff_laser_frame"},
+                 {'child_frame' : "camera_link"},
+             ]
+        ),
+    ]
+
+    socket_transfer = [
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                get_share_file_path_from_package(package_name="missions_pkg", file_name="giraff_sockets.launch.py")
+            )
+        )
+    ]
+
     actions=[PushRosNamespace(namespace)]
     #actions.extend(robot_state_publisher)
-    #actions.extend(rviz)
+    actions.extend(rviz)
     #actions.extend(mqtt)
     #actions.extend(status_publisher)
     #actions.extend(reactive_robot2023)
-    #actions.extend(start_async_slam_toolbox_node)
+    # actions.extend(start_async_slam_toolbox_node)
     
-    #actions.extend(giraff_driver)
-    #actions.extend(hokuyo_node)
+    actions.extend(giraff_driver)
+    actions.extend(hokuyo_node)
     #actions.extend(PID)
     #actions.extend(anemometer)
+    actions.extend(astra_camera)
+    actions.extend(socket_transfer)
     actions.extend(navigation_nodes)
     actions.extend(keyboard_control)
     return[
