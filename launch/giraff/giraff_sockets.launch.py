@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
         prefix ="xterm -hold -e",
         parameters=[
             {"protocol": "TCP"},
-            {"serverPort": 15770},
+            {"serverPort": 15761},
             {"serverIP": serverIP},
             {"topic": "/giraff/map"},
             {"isServerSocket": False},
@@ -51,7 +51,7 @@ def launch_setup(context, *args, **kwargs):
         prefix ="xterm -hold -e",
         parameters=[
             {"protocol": "TCP"},
-            {"serverPort": 15780},
+            {"serverPort": 15762},
             {"serverIP": serverIP},
             {"actionServer": "/giraff/navigate_to_pose"},
             {"isServerSocket": False},
@@ -64,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
         prefix ="xterm -hold -e",
         parameters=[
             {"protocol": "TCP"},
-            {"serverPort": 15790},
+            {"serverPort": 15763},
             {"serverIP": serverIP},
             {"topic": "/giraff/initialpose"},
             {"isServerSocket": False},
@@ -77,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
         prefix ="xterm -hold -T laser -e",
         parameters=[
             {"protocol": "UDP"},
-            {"serverPort": 15800},
+            {"serverPort": 15764},
             {"serverIP": serverIP},
             {"topic": "/giraff/laser_scan"},
             {"isServerSocket": False},
@@ -93,7 +93,7 @@ def launch_setup(context, *args, **kwargs):
             parameters=[
                 {"protocol": "UDP"},
                 {"serverIP": serverIP},
-                {"serverPort": 15801},
+                {"serverPort": 15765},
                 {"topic": "/giraff/camera/color/camera_info"},
                 {"isServerSocket": False},
                 {"maxFrequency" : 10}
@@ -106,7 +106,7 @@ def launch_setup(context, *args, **kwargs):
             parameters=[
                 {"protocol": "UDP"},
                 {"serverIP": serverIP},
-                {"serverPort": 15802},
+                {"serverPort": 15766},
                 {"topic": "/giraff/camera/color/image_compressed"},
                 {"isServerSocket": False},
                 {"maxFrequency" : 10}
@@ -119,7 +119,7 @@ def launch_setup(context, *args, **kwargs):
             parameters=[
                 {"protocol": "UDP"},
                 {"serverIP": serverIP},
-                {"serverPort": 15803},
+                {"serverPort": 15767},
                 {"topic": "/giraff/camera/depth/image_compressed"},
                 {"isServerSocket": False},
                 {"maxFrequency" : 10}
@@ -134,7 +134,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[
             {"protocol": "TCP"},
             {"serverIP": serverIP},
-            {"serverPort": 15791},
+            {"serverPort": 15768},
             {"topic": "/giraff/amcl_pose"},
             {"isServerSocket": False},
         ],
@@ -147,7 +147,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[
             {"protocol": "UDP"},
             {"serverIP": serverIP},
-            {"serverPort": 15792},
+            {"serverPort": 15769},
             {"topic": "/giraff/cmd_vel"},
             {"isServerSocket": False},
         ],
