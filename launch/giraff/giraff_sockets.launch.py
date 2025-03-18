@@ -16,7 +16,9 @@ def launch_arguments():
 
 def launch_setup(context, *args, **kwargs):
 
-    serverIP = "150.214.109.133"
+    #serverIP = "150.214.109.133"
+    serverIP = "192.168.1.104"
+    
 
     tf = Node(
         package="tf_transfer",
@@ -153,15 +155,57 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
+    olfaction_sensors = [
+        Node(
+            package="olfaction_msgs_transfer",
+            executable="gas_sensor_client",
+            prefix="xterm -hold -T pid -e ",
+            parameters=[
+                {"protocol": "UDP"},
+                {"serverIP": serverIP},
+                {"serverPort": 15770},
+                {"topic": "/giraff/PID/Sensor_reading"},
+                {"isServerSocket": False},
+            ],
+        ),
+        Node(
+            package="olfaction_msgs_transfer",
+            executable="anemometer_client",
+            prefix="xterm -hold -T anemometer -e ",
+            parameters=[
+                {"protocol": "UDP"},
+                {"serverIP": serverIP},
+                {"serverPort": 15771},
+                {"topic": "/giraff/Anemometer/WindSensor_reading"},
+                {"isServerSocket": False},
+            ],
+        )
+    ]
+
+    makePlan = Node(
+        package="nav2_transfer",
+        executable="makePlanServer",
+        prefix ="xterm -hold -e",
+        parameters=[
+            {"protocol": "TCP"},
+            {"serverPort": 15772},
+            {"serverIP": serverIP},
+            {"actionServer": "/giraff/compute_path_to_pose"},
+            {"isServerSocket": False},
+        ],
+    )
+
     nodes = []
     nodes.append(tf)
     nodes.append(map)
     nodes.append(nav2)
+    nodes.append(makePlan)
     nodes.append(initialPose)
     nodes.append(laser)
     nodes.extend(camera)
     nodes.append(amcl)
     nodes.append(cmd_vel)
+    # nodes.extend(olfaction_sensors)
     return nodes
 
 

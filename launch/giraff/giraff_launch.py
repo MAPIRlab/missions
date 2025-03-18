@@ -161,7 +161,8 @@ def launch_setup(context, *args, **kwargs):
             name="minirae_lite",
             prefix="xterm -hold -e",
             parameters=[
-                {"port":"/dev/ttyUSB0"}
+                {"port":"/dev/minirae_lite"},
+                {"topic_name":"/giraff/PID/Sensor_reading"}
             ]
         )
     ] 
@@ -173,7 +174,7 @@ def launch_setup(context, *args, **kwargs):
             name="windsonic",
             prefix="xterm -hold -e",
             parameters=[
-                {"port":"/dev/ttyUSB1"},
+                {"port":"/dev/windsonic"},
                 {"frame_id":"giraff_base_link"}
             ]
         )
@@ -215,21 +216,23 @@ def launch_setup(context, *args, **kwargs):
     ]
 
     actions=[PushRosNamespace(namespace)]
+    actions.extend(giraff_driver)
+
     #actions.extend(robot_state_publisher)
-    actions.extend(rviz)
-    #actions.extend(mqtt)
     #actions.extend(status_publisher)
-    #actions.extend(reactive_robot2023)
     # actions.extend(start_async_slam_toolbox_node)
     
-    actions.extend(giraff_driver)
-    actions.extend(hokuyo_node)
-    #actions.extend(PID)
-    #actions.extend(anemometer)
-    actions.extend(astra_camera)
-    actions.extend(socket_transfer)
-    actions.extend(navigation_nodes)
+    actions.extend(rviz)
     actions.extend(keyboard_control)
+
+    #actions.extend(mqtt)
+    actions.extend(socket_transfer)
+    
+    actions.extend(hokuyo_node)
+    # actions.extend(PID)
+    # actions.extend(anemometer)
+    actions.extend(astra_camera)
+    actions.extend(navigation_nodes)
     return[
         GroupAction
         (

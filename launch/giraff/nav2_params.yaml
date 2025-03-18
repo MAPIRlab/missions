@@ -334,8 +334,9 @@ $(var namespace):
   rf2o_laser_odometry:
     ros__parameters:
       laser_scan_topic: laser_scan
-      odom_topic : odom_rf2o
+      odom_topic : odom
       publish_tf : True
       base_frame_id : $(var namespace)_base_footprint
       odom_frame_id : $(var namespace)_odom
+      init_pose_from_topic: ""
       freq : 20.0
